@@ -1,9 +1,7 @@
 "use client";
 
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
 
 interface AboutProps {
   skills: { name: string }[];
@@ -34,17 +32,14 @@ export default function About({ skills = [] }: AboutProps) {
   return (
     <section className="bg-[#eadfd8]/80 py-20 px-6">
       <div className="mx-auto max-w-7xl flex flex-col items-center">
-        <h2 className="text-2xl md:text-4xl text-black mb-4 text-center">
+        <h2 className="text-xl md:text-4xl text-black mb-4 text-center">
           Crafting experiences with{" "}
-
-
           <motion.span
             layout
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             className="inline-flex items-center justify-center bg-[#634836] text-white px-8 py-2 rounded-full italic min-w-[200px] mt-2 md:mt-0"
             style={{ fontFamily: "var(--font-newsreader)" }}
           >
-
             <AnimatePresence mode="popLayout">
               <motion.span
                 key={currentSkill}
@@ -69,4 +64,3 @@ export default function About({ skills = [] }: AboutProps) {
     </section>
   );
 }
-
