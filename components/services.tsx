@@ -1,17 +1,16 @@
-"use client"
+"use client";
 
-
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 interface Service {
-  id: string
-  title: string
-  description: string
-  icon?: string
+  id: string;
+  title: string;
+  description: string;
+  icon?: string;
 }
 
 interface ServicesProps {
-  services: Service[]
+  services: Service[];
 }
 
 export default function Services({ services = [] }: ServicesProps) {
@@ -27,17 +26,22 @@ export default function Services({ services = [] }: ServicesProps) {
         >
           <h2
             className="text-3xl md:text-4xl font-bold text-black mb-4"
-            style={{ fontFamily: "var(--font-poppins)" }}
+            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
           >
             Services
           </h2>
-          <p className="text-[#634836] max-w-2xl mx-auto" style={{ fontFamily: "var(--font-poppins)" }}>
+          <p
+            className="text-[#634836] max-w-2xl mx-auto"
+            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
+          >
             Specialized solutions to bring your digital vision to life
           </p>
         </motion.div>
 
-        {(!services || services.length === 0) ? (
-          <p className="text-center text-[#bfa18e]">No services added yet. Check back soon!</p>
+        {!services || services.length === 0 ? (
+          <p className="text-center text-[#bfa18e]">
+            No services added yet. Check back soon!
+          </p>
         ) : (
           <div className="grid md:grid-cols-3 gap-8">
             {services.map((service, index) => (
@@ -60,7 +64,7 @@ export default function Services({ services = [] }: ServicesProps) {
 
                   <h3
                     className="text-xl font-bold text-[#3d2e24] mb-3"
-                    style={{ fontFamily: "var(--font-poppins)" }}
+                    style={{ fontFamily: "var(--font-poppins), sans-serif" }}
                   >
                     {service.title}
                   </h3>
@@ -74,5 +78,5 @@ export default function Services({ services = [] }: ServicesProps) {
         )}
       </div>
     </section>
-  )
+  );
 }

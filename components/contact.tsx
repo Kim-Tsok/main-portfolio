@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 export default function Contact() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true)
-  }, [])
+    setIsVisible(true);
+  }, []);
 
   return (
     <section className="bg-[#eadfd8]/80 px-6 py-24">
@@ -16,7 +16,7 @@ export default function Contact() {
           className={`text-3xl md:text-4xl font-bold text-black mb-6 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
-          style={{ fontFamily: "var(--font-poppins)" }}
+          style={{ fontFamily: "var(--font-poppins), sans-serif" }}
         >
           Let's Work Together
         </h2>
@@ -26,8 +26,8 @@ export default function Contact() {
           }`}
           style={{ transitionDelay: "150ms" }}
         >
-          Have a project in mind? I'd love to hear about it and discuss how we can collaborate to bring your ideas to
-          life.
+          Have a project in mind? I'd love to hear about it and discuss how we
+          can collaborate to bring your ideas to life.
         </p>
 
         <button
@@ -35,7 +35,7 @@ export default function Contact() {
             isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
           }`}
           style={{
-            fontFamily: "var(--font-poppins)",
+            fontFamily: "var(--font-poppins), sans-serif",
             transitionDelay: "300ms",
           }}
         >
@@ -46,26 +46,26 @@ export default function Contact() {
           <a
             href="#"
             className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:translate-y-1"
-            style={{ fontFamily: "var(--font-poppins)" }}
+            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
           >
             LinkedIn
           </a>
           <a
             href="#"
             className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:translate-y-1"
-            style={{ fontFamily: "var(--font-poppins)" }}
+            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
           >
             Twitter
           </a>
           <a
             href="#"
             className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:translate-y-1"
-            style={{ fontFamily: "var(--font-poppins)" }}
+            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
           >
             GitHub
           </a>
         </div>
       </div>
     </section>
-  )
+  );
 }
