@@ -49,7 +49,7 @@ export default function Contact() {
             initial={{ scale: 1 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.97 }}
-            className="ml-5 px-10 py-4 bg-[#634836] text-white rounded-full font-semibold text-lg cursor-pointer"
+            className="md:ml-5 max-md:mb-3 px-10 py-4 bg-[#634836] text-white rounded-full font-semibold text-lg cursor-pointer"
           >
             Get In Touch
           </motion.button>
@@ -59,7 +59,7 @@ export default function Contact() {
           initial={{ scale: 1 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.97 }}
-          className="ml-5 px-10 py-4 border-[#634836] border-3 text-[#634836] rounded-full font-semibold text-lg cursor-pointer"
+          className="md:ml-5 px-10 py-4 border-[#634836] border-3 text-[#634836] rounded-full font-semibold text-lg cursor-pointer"
         >
           Download CV
         </motion.button>
@@ -103,7 +103,7 @@ export default function Contact() {
             Youtube
           </a>
           <a
-            href="https://www.instagram.com/im_telepethic"
+            href="https://www.instagram.com/im_telepathic"
             className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:-translate-y-1"
             style={{ fontFamily: "var(--font-poppins), sans-serif" }}
           >
