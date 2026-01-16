@@ -99,7 +99,7 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
                         {project.tech_stack.map((tech: string, i: number) => (
                           <span
                             key={tech}
-                            className="bg-[#ab8164] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#634836] transition-colors duration-300 animate-in fade-in duration-500"
+                            className="bg-[#ab8164] text-white px-4 py-2 rounded-full text-sm font-medium "
                             style={{
                               animationDelay: `${300 + i * 50}ms`,
                             }}
@@ -139,7 +139,7 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-6 py-3 bg-[#634836] text-white rounded-full font-semibold hover:bg-[#9b8b7e] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-[#634836] text-white rounded-full font-semibold hover:bg-[#4a3628] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
                         >
                           {link.label}
                         </a>

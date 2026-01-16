@@ -46,9 +46,9 @@ export default function Services({ services = [] }: ServicesProps) {
                 className="group relative h-full"
               >
                 <div className="absolute inset-0 bg-[#ab8164]/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative h-full bg-white/40 backdrop-blur-md rounded-2xl p-8 border border-white/50 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center">
+                <div className="relative h-full bg-white/40 backdrop-blur-md rounded-2xl p-8 border border-white/50 shadow-sm transition-all duration-200 flex flex-col items-center text-center">
                   {service.icon && (
-                    <div className="mb-6 inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-[#ab8164] to-[#634836] text-white text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div className="mb-6 inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-[#ab8164] to-[#634836] text-white text-3xl group-hover:scale-110 transition-transform duration-200">
                       {service.icon}
                     </div>
                   )}
