@@ -1,53 +1,59 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Github, ExternalLink } from "lucide-react"
-
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Github, ExternalLink } from "lucide-react";
 
 export interface Project {
-  id: string
-  title: string
-  description: string
-  image_url?: string
-  tech_stack: string[]
-  link?: string
-  github_url?: string
-  custom_links?: { label: string; url: string }[]
+  id: string;
+  title: string;
+  description: string;
+  image_url?: string;
+  tech_stack: string[];
+  link?: string;
+  github_url?: string;
+  custom_links?: { label: string; url: string }[];
 }
 
 interface ShowcaseProps {
-  projects: Project[]
+  projects: Project[];
 }
 
 export default function Showcase({ projects = [] }: ShowcaseProps) {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % projects.length)
-  }
+    setCurrentIndex((prev) => (prev + 1) % projects.length);
+  };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length)
-  }
+    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+  };
 
   if (!projects || projects.length === 0) {
     return (
       <section className="bg-[#eadfd8]/80 px-6 py-24">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-4">Featured Projects</h2>
-          <p className="text-center text-[#bfa18e]">No projects added yet. Check back soon!</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-4">
+            Featured Projects
+          </h2>
+          <p className="text-center text-[#bfa18e]">
+            No projects added yet. Check back soon!
+          </p>
         </div>
       </section>
-    )
+    );
   }
 
   return (
     <section className="bg-[#eadfd8] px-6 py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 animate-in fade-in duration-500">
-          <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-4">Featured Projects</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-4">
+            Featured Projects
+          </h2>
           <p className="text-center text-[#634836] max-w-2xl mx-auto">
-            A selection of recent work showcasing design and development expertise
+            A selection of recent work showcasing design and development
+            expertise
           </p>
         </div>
 
@@ -57,7 +63,9 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
               <div
                 key={project.id}
                 className={`transition-all duration-700 ${
-                  index === currentIndex ? "opacity-100 translate-x-0" : "hidden opacity-0 translate-x-full"
+                  index === currentIndex
+                    ? "opacity-100 translate-x-0"
+                    : "hidden opacity-0 translate-x-full"
                 }`}
               >
                 <div className="flex flex-col lg:flex-row gap-8 items-center animate-in fade-in duration-500">
@@ -82,7 +90,9 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
                     <h3 className="text-3xl font-bold text-black mb-4 group-hover:text-[#634836] transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-[#634836] text-lg mb-6 leading-relaxed">{project.description}</p>
+                    <p className="text-[#634836] text-lg mb-6 leading-relaxed">
+                      {project.description}
+                    </p>
 
                     {project.tech_stack && project.tech_stack.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-8">
@@ -129,9 +139,9 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-6 py-3 bg-[#ab8164] text-white rounded-full font-semibold hover:bg-[#9b8b7e] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-[#634836] text-white rounded-full font-semibold hover:bg-[#9b8b7e] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
                         >
-                          {link.label} <ExternalLink size={16} />
+                          {link.label}
                         </a>
                       ))}
                     </div>
@@ -156,7 +166,9 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
                   key={index}
                   onClick={() => setCurrentIndex(index)}
                   className={`rounded-full transition-all duration-300 ${
-                    index === currentIndex ? "bg-[#634836] w-8 h-2" : "bg-[#ab8164] w-2 h-2 hover:bg-[#9b8b7e]"
+                    index === currentIndex
+                      ? "bg-[#634836] w-8 h-2"
+                      : "bg-[#ab8164] w-2 h-2 hover:bg-[#9b8b7e]"
                   }`}
                   aria-label={`Go to project ${index + 1}`}
                 />
@@ -174,5 +186,5 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

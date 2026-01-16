@@ -15,7 +15,7 @@ interface ServicesProps {
 
 export default function Services({ services = [] }: ServicesProps) {
   return (
-    <section className="bg-[#eadfd8] px-6 py-24">
+    <section className="bg-[#eadfd8] px-6 py-24" id="services">
       <div className="mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -24,18 +24,9 @@ export default function Services({ services = [] }: ServicesProps) {
           transition={{ duration: 0.6 }}
           className="mb-16 text-center"
         >
-          <h2
-            className="text-3xl md:text-4xl font-bold text-black mb-4"
-            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
-          >
+          <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-4">
             Services
           </h2>
-          <p
-            className="text-[#634836] max-w-2xl mx-auto"
-            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
-          >
-            Specialized solutions to bring your digital vision to life
-          </p>
         </motion.div>
 
         {!services || services.length === 0 ? (
