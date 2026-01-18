@@ -45,7 +45,7 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
   }
 
   return (
-    <section className="bg-[#eadfd8] px-6 py-24">
+    <section className="bg-[#eadfd8] px-6 py-12 md:py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 animate-in fade-in duration-500">
           <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-4">

@@ -30,7 +30,7 @@ export default function About({ skills = [] }: AboutProps) {
   }, [skills]);
 
   return (
-    <section className="bg-[#eadfd8]/80 py-20 px-6" id="about">
+    <section className="bg-[#eadfd8]/80 py-10 md:py-20 px-6" id="about">
       <div className="mx-auto max-w-7xl flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

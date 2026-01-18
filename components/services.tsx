@@ -15,7 +15,7 @@ interface ServicesProps {
 
 export default function Services({ services = [] }: ServicesProps) {
   return (
-    <section className="bg-[#eadfd8] px-6 py-24" id="services">
+    <section className="bg-[#eadfd8] px-6 py-12 md:py-24" id="services">
       <div className="mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

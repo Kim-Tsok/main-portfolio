@@ -12,7 +12,7 @@ export default function Contact() {
   }, []);
 
   return (
-    <section className="bg-[#eadfd8]/80 px-6 py-24 pb-10" id="contact">
+    <section className="bg-[#eadfd8]/80 px-6 py-12 md:py-24 pb-10" id="contact">
       <div className="mx-auto max-w-2xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
