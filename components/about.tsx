@@ -61,11 +61,13 @@ export default function About({ skills = [] }: AboutProps) {
             </motion.span>
           </h2>
           <p className="text-[#bfa18e] max-w-2xl text-center text-sm md:text-base leading-relaxed mt-4">
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Id,
-            voluptate iure! Repudiandae doloremque possimus libero illo, odio
-            similique porro repellendus numquam, quisquam, illum voluptates
-            earum pariatur suscipit eius non impedit!"{" "}
-            <span className="font-semibold">- Himself</span>
+            "Kim Kelvin Tsok delivered a high-performance website that exceeded
+            the initial scope for our event center. The site is fast,
+            responsive, and handles our booking requirements with precision. His
+            technical execution and attention to detail are top-tier."{" "}
+            <span className="font-semibold">
+              - Usiju Gadzama, CEO of Usiju World Events
+            </span>
           </p>
         </motion.div>
       </div>
