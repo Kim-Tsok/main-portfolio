@@ -1,4 +1,3 @@
-
 import type React from "react";
 import type { Metadata } from "next";
 import { Poppins, Inter, Newsreader } from "next/font/google";
@@ -26,6 +25,9 @@ const newsreader = Newsreader({
 
 export const metadata: Metadata = {
   title: "Kim Tsok - Frontend Developer",
+  verification: {
+    google: "ByYOrfiiKs9mfEQa_NmMyWh5Z23cPm9eGpDDoK2gTGI",
+  },
   description:
     "Crafting beautiful digital experiences with modern web technologies",
   icons: {
@@ -64,4 +66,3 @@ export default function RootLayout({
     </html>
   );
 }
-
