@@ -67,12 +67,21 @@ export const metadata: Metadata = {
     description: siteDescription,
     siteName,
     locale: "en_US",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Kim Kelvin Tsok - Frontend Web Developer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
     creator: "@im_telepathic",
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [
