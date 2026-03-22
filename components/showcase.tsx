@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Github, ExternalLink } from "lucide-react";
 
 export interface Project {
@@ -47,7 +48,13 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
   return (
     <section className="bg-[#eadfd8] px-6 py-12 md:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-16 animate-in fade-in duration-500">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="mb-16 text-center"
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-4">
             Featured Projects
           </h2>
@@ -55,7 +62,7 @@ export default function Showcase({ projects = [] }: ShowcaseProps) {
             A selection of recent work showcasing design and development
             expertise
           </p>
-        </div>
+        </motion.div>
 
         <div className="relative">
           <div className="overflow-hidden">
