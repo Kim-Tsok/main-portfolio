@@ -2,25 +2,27 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import type { Project, Service, Skill } from "@/lib/data"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "sonner"
 
+type AdminService = Service & { icon: string | null; order_index: number }
+
 export default function AdminPage() {
-  const [user, setUser] = useState<any>(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
-  const supabase = createClient()
+  const [supabase] = useState(createClient)
   const [activeTab, setActiveTab] = useState<"projects" | "skills" | "services">("projects")
-  const [projects, setProjects] = useState<any[]>([])
-  const [skills, setSkills] = useState<any[]>([])
-  const [services, setServices] = useState<any[]>([])
+  const [projects, setProjects] = useState<Project[]>([])
+  const [skills, setSkills] = useState<Skill[]>([])
+  const [services, setServices] = useState<AdminService[]>([])
 
 
   // Project form state
@@ -48,6 +50,21 @@ export default function AdminPage() {
     order_index: 0,
   })
 
+  const fetchProjects = useCallback(async () => {
+    const { data } = await supabase.from("projects").select("*")
+    if (data) setProjects(data)
+  }, [supabase])
+
+  const fetchSkills = useCallback(async () => {
+    const { data } = await supabase.from("skills").select("*")
+    if (data) setSkills(data)
+  }, [supabase])
+
+  const fetchServices = useCallback(async () => {
+    const { data } = await supabase.from("services").select("*").order("order_index", { ascending: true })
+    if (data) setServices(data)
+  }, [supabase])
+
   useEffect(() => {
     const checkAuth = async () => {
       const {
@@ -60,7 +77,6 @@ export default function AdminPage() {
       }
 
       const isUserAdmin = user.user_metadata?.is_admin === true
-      setUser(user)
       setIsAdmin(isUserAdmin)
       setLoading(false)
 
@@ -72,22 +88,7 @@ export default function AdminPage() {
     }
 
     checkAuth()
-  }, [])
-
-  const fetchProjects = async () => {
-    const { data } = await supabase.from("projects").select("*")
-    if (data) setProjects(data)
-  }
-
-  const fetchSkills = async () => {
-    const { data } = await supabase.from("skills").select("*")
-    if (data) setSkills(data)
-  }
-
-  const fetchServices = async () => {
-    const { data } = await supabase.from("services").select("*").order("order_index", { ascending: true })
-    if (data) setServices(data)
-  }
+  }, [supabase, router, fetchProjects, fetchSkills, fetchServices])
 
   const handleAddProject = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -149,9 +150,9 @@ export default function AdminPage() {
       setSkillForm({ name: "", category: "Frontend" })
       fetchSkills()
       toast.success("Skill added successfully")
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error adding skill:", error)
-      toast.error(error.message || "Failed to add skill")
+      toast.error(error instanceof Error ? error.message : "Failed to add skill")
     }
   }
 
@@ -160,7 +161,7 @@ export default function AdminPage() {
       await supabase.from("skills").delete().eq("id", id)
       fetchSkills()
       toast.success("Skill deleted")
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete skill")
     }
   }
@@ -208,7 +209,7 @@ export default function AdminPage() {
         <Card>
           <CardHeader>
             <CardTitle>Access Denied</CardTitle>
-            <CardDescription>You don't have permission to access this page.</CardDescription>
+            <CardDescription>You don&apos;t have permission to access this page.</CardDescription>
           </CardHeader>
           <CardContent>
             <Button onClick={() => router.push("/")}>Go Back Home</Button>
