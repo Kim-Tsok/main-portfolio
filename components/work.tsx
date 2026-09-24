@@ -1,250 +1,210 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useReducedMotion,
-  type PanInfo,
-} from "framer-motion";
-import { ChevronLeft, ChevronRight, Github, ExternalLink } from "lucide-react";
+import { useMemo, useState } from "react";
+import Image, { type ImageLoader } from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, Github } from "lucide-react";
+import { isClientProject as isClient, type Project } from "@/lib/data";
+import { cn } from "@/lib/utils";
+import SectionHeading from "./section-heading";
 
-const slideTransition = {
-  x: {
-    type: "tween" as const,
-    duration: 0.18,
-    ease: [0.32, 0.72, 0, 1] as const,
-  },
-  opacity: { duration: 0.12 },
+// Screenshots live on Cloudinary, so let it resize and pick the format.
+const cloudinary: ImageLoader = ({ src, width, quality }) =>
+  src.replace("/upload/", `/upload/f_auto,q_${quality ?? "auto"},w_${width}/`);
+
+type Filter = "all" | "client" | "personal";
+
+// Tags in the database are typed by hand, so tidy the common ones for display.
+const tagNames: Record<string, string> = {
+  html: "HTML",
+  css: "CSS",
+  javascript: "JavaScript",
+  typescript: "TypeScript",
+  "tailwind css": "Tailwind CSS",
+  "daisy ui": "daisyUI",
+  "next.js": "Next.js",
+  shadcn: "shadcn/ui",
 };
 
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction >= 0 ? "100%" : "-100%",
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction: number) => ({
-    x: direction < 0 ? "100%" : "-100%",
-    opacity: 0,
-  }),
-};
+export default function Work({ projects }: { projects: Project[] }) {
+  const [filter, setFilter] = useState<Filter>("all");
 
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  image_url?: string;
-  tech_stack: string[];
-  link?: string;
-  github_url?: string;
-  custom_links?: { label: string; url: string }[];
-}
+  const clientCount = useMemo(() => projects.filter(isClient).length, [projects]);
+  const filters: { id: Filter; label: string; count: number }[] = [
+    { id: "all", label: "All", count: projects.length },
+    { id: "client", label: "Client work", count: clientCount },
+    { id: "personal", label: "Personal", count: projects.length - clientCount },
+  ];
 
-interface ShowcaseProps {
-  projects: Project[];
-}
-
-export default function Showcase({ projects = [] }: ShowcaseProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
-
-  const transition = prefersReducedMotion
-    ? { duration: 0 }
-    : slideTransition;
-
-  const nextSlide = useCallback(() => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % projects.length);
-  }, [projects.length]);
-
-  const prevSlide = useCallback(() => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
-  }, [projects.length]);
-
-  const onDragEnd = useCallback(
-    (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-      const threshold = 48;
-      if (info.offset.x < -threshold) nextSlide();
-      else if (info.offset.x > threshold) prevSlide();
-    },
-    [nextSlide, prevSlide]
+  const visible = projects.filter((p) =>
+    filter === "all" ? true : filter === "client" ? isClient(p) : !isClient(p)
   );
 
-  if (!projects || projects.length === 0) {
-    return (
-      <section className="bg-[#eadfd8]/80 px-6 py-24">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-4">
-            Featured Projects
-          </h2>
-          <p className="text-center text-[#bfa18e]">
-            No projects added yet. Check back soon!
-          </p>
-        </div>
-      </section>
-    );
-  }
-
-  const activeProject = projects[currentIndex];
-
   return (
-    <section className="bg-[#eadfd8] px-6 py-12 md:py-24">
-      <div className="mx-auto max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
+    <section id="work" className="py-24 md:py-32">
+      <div className="container-page">
+        <SectionHeading
+          title={
+            <>
+              Things I&apos;ve{" "}
+              <span className="font-serif font-normal italic tracking-normal">
+                built
+              </span>
+            </>
+          }
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-4">
-            Featured Projects
-          </h2>
-          <p className="text-center text-[#634836] max-w-2xl mx-auto">
-            A selection of recent work showcasing design and development
-            expertise
+          Client sites, tools, games and the odd experiment.
+        </SectionHeading>
+
+        {projects.length === 0 ? (
+          <p className="rounded-2xl border border-dashed border-tan/50 p-12 text-center text-brown">
+            New projects are on the way. Check back soon.
           </p>
-        </motion.div>
-
-        <div className="relative">
-          <motion.div
-            className="overflow-hidden [-webkit-tap-highlight-color:transparent]"
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.12}
-            dragDirectionLock
-            onDragEnd={onDragEnd}
-          >
-            <AnimatePresence initial={false} custom={direction} mode="wait">
-              <motion.div
-                key={activeProject.id}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={transition}
-                className="w-full"
-              >
-                <div className="flex flex-col lg:flex-row gap-8 items-center">
-                  <div className="flex-1 w-full min-w-0">
-                    <div className="rounded-2xl overflow-hidden bg-[#d4cfc5] aspect-video flex items-center justify-center relative group">
-                      {activeProject.image_url ? (
-                            <img
-                              src={activeProject.image_url || "/placeholder.svg"}
-                              alt={activeProject.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                          ) : (
-                            <div className="text-[#bfa18e]">No image</div>
-                          )}
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                        </div>
-                      </div>
-
-                  <div className="flex-1 w-full min-w-0">
-                    <h3 className="text-3xl font-bold text-black mb-4 transition-colors">
-                      {activeProject.title}
-                    </h3>
-                    <p className="text-[#634836] text-lg mb-6 leading-relaxed">
-                      {activeProject.description}
-                    </p>
-
-                    {activeProject.tech_stack &&
-                      activeProject.tech_stack.length > 0 && (
-                          <div className="flex flex-wrap gap-2 mb-8">
-                            {activeProject.tech_stack.map((tech: string) => (
-                              <span
-                                key={tech}
-                                className="bg-[#ab8164] text-white px-4 py-2 rounded-full text-sm font-medium"
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-
-                    <div className="flex flex-wrap gap-3">
-                      {activeProject.link && (
-                            <a
-                              href={activeProject.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-6 py-3 bg-[#634836] text-white rounded-full font-semibold hover:bg-[#4a3628] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-                            >
-                              View Project <ExternalLink size={16} />
-                            </a>
-                            )}
-
-                      {activeProject.github_url && (
-                            <a
-                              href={activeProject.github_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-                            >
-                              <Github size={18} /> GitHub
-                            </a>
-                          )}
-
-                      {activeProject.custom_links?.map((link, i) => (
-                        <a
-                          key={i}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-6 py-3 bg-[#634836] text-white rounded-full font-semibold hover:bg-[#4a3628] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-                        >
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </motion.div>
-
-          <div className="flex items-center justify-between mt-12 animate-in fade-in duration-700 delay-300">
-            <button
-              onClick={prevSlide}
-              className="bg-[#634836] hover:bg-[#4a3628] text-white rounded-full p-3 transition-all duration-300 hover:shadow-lg hover:scale-110 active:scale-95"
-              aria-label="Previous project"
+        ) : (
+          <>
+            <div
+              role="tablist"
+              aria-label="Filter projects"
+              className="mb-10 flex flex-wrap gap-2"
             >
-              <ChevronLeft size={24} />
-            </button>
-
-            <div className="flex justify-center gap-3">
-              {projects.map((_, index) => (
+              {filters.map((f) => (
                 <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`rounded-full transition-all duration-300 ${
-                    index === currentIndex
-                      ? "bg-[#634836] w-8 h-2"
-                      : "bg-[#ab8164] w-2 h-2 hover:bg-[#9b8b7e]"
-                  }`}
-                  aria-label={`Go to project ${index + 1}`}
-                />
+                  key={f.id}
+                  role="tab"
+                  aria-selected={filter === f.id}
+                  onClick={() => setFilter(f.id)}
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors",
+                    filter === f.id
+                      ? "border-ink bg-ink text-paper"
+                      : "border-line text-ink/80 hover:border-tan hover:text-ink"
+                  )}
+                >
+                  {f.label}
+                  <span
+                    className={cn(
+                      "tabular-nums text-xs",
+                      filter === f.id ? "text-paper/60" : "text-brown/60"
+                    )}
+                  >
+                    {f.count}
+                  </span>
+                </button>
               ))}
             </div>
 
-            <button
-              onClick={nextSlide}
-              className="bg-[#634836] hover:bg-[#4a3628] text-white rounded-full p-3 transition-all duration-300 hover:shadow-lg hover:scale-110 active:scale-95"
-              aria-label="Next project"
-            >
-              <ChevronRight size={24} />
-            </button>
-          </div>
-        </div>
+            <motion.ul layout className="grid gap-x-8 gap-y-14 md:grid-cols-2">
+              <AnimatePresence mode="popLayout" initial={false}>
+                {visible.map((project) => (
+                  <motion.li
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.97 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <ProjectCard project={project} />
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </motion.ul>
+          </>
+        )}
       </div>
     </section>
+  );
+}
+
+function ProjectCard({ project }: { project: Project }) {
+  const primary = project.link ?? project.github_url ?? project.custom_links?.[0]?.url;
+  const client = isClient(project);
+  const tags = project.tech_stack
+    .filter((t) => t.toLowerCase() !== "client")
+    .map((t) => tagNames[t.toLowerCase()] ?? t);
+
+  const links = [
+    project.link && { label: "Live site", href: project.link, icon: ArrowUpRight },
+    project.github_url && { label: "Source", href: project.github_url, icon: Github },
+    ...(project.custom_links ?? []).map((l) => ({
+      label: l.label,
+      href: l.url,
+      icon: ArrowUpRight,
+    })),
+  ].filter(Boolean) as { label: string; href: string; icon: typeof ArrowUpRight }[];
+
+  return (
+    <article className="group">
+      <a
+        href={primary}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Open ${project.title}`}
+        tabIndex={-1}
+        className="relative block aspect-[16/10] overflow-hidden rounded-2xl border border-line bg-paper-deep"
+      >
+        {project.image_url ? (
+          <Image
+            src={project.image_url}
+            loader={project.image_url.includes("res.cloudinary.com") ? cloudinary : undefined}
+            alt=""
+            fill
+            sizes="(min-width: 768px) 560px, 100vw"
+            className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+          />
+        ) : (
+          <span className="grid h-full place-items-center font-serif text-4xl italic text-tan">
+            {project.title}
+          </span>
+        )}
+        <span className="absolute right-4 top-4 grid size-11 translate-y-1 place-items-center rounded-full bg-paper text-ink opacity-0 shadow-sm transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <ArrowUpRight className="size-5" />
+        </span>
+      </a>
+
+      <div className="mt-6">
+        {client && (
+          <p className="mb-1.5 text-xs font-medium uppercase tracking-wider text-tan">
+            Client project
+          </p>
+        )}
+        <h3 className="text-2xl font-semibold text-ink">{project.title}</h3>
+      </div>
+
+      <p className="mt-3 line-clamp-3 leading-relaxed text-brown">
+        {project.description}
+      </p>
+
+      {tags.length > 0 && (
+        <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Built with">
+          {tags.map((tag) => (
+            <li
+              key={tag}
+              className="rounded-full border border-line bg-paper/60 px-2.5 py-1 text-xs text-brown"
+            >
+              {tag}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {links.length > 0 && (
+        <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+          {links.map(({ label, href, icon: Icon }) => (
+            <a
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-tan/50 underline-offset-4 transition-colors hover:decoration-ink"
+            >
+              <Icon className="size-4" />
+              {label}
+            </a>
+          ))}
+        </div>
+      )}
+    </article>
   );
 }

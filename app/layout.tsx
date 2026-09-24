@@ -1,17 +1,18 @@
 import type React from "react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins, Inter, Newsreader } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
+import { site, socials } from "@/lib/site";
 import "./globals.css";
 
-const _poppins = Poppins({
+const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
 });
 
-const _inter = Inter({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
@@ -19,15 +20,14 @@ const _inter = Inter({
 const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-const siteName = "Kim Tsok";
-const siteTitle = "Kim Tsok | Front-End Developer Portfolio";
-const siteDescription =
-  "Kim Tsok is a front-end developer building modern, high-performance web experiences with React and Next.js.";
+const siteUrl = site.url;
+const siteName = site.name;
+const siteTitle = `${site.name} | Front-End Developer Portfolio`;
+const siteDescription = site.description;
 const siteKeywords = [
   "Kim Tsok",
   "Kim Kelvin Tsok",
@@ -40,6 +40,10 @@ const siteKeywords = [
   "Web developer",
   "UI developer",
 ];
+
+export const viewport: Viewport = {
+  themeColor: "#eadfd8",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -54,7 +58,7 @@ export const metadata: Metadata = {
   keywords: siteKeywords,
   applicationName: siteName,
   category: "portfolio",
-  authors: [{ name: "Kim Tsok", url: siteUrl }],
+  authors: [{ name: site.name, url: siteUrl }],
   creator: "Kim Tsok",
   publisher: "Kim Tsok",
   alternates: {
@@ -83,23 +87,6 @@ export const metadata: Metadata = {
     creator: "@im_telepathic",
     images: ["/og-image.png"],
   },
-  icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
-  },
 };
 
 export default function RootLayout({
@@ -110,19 +97,15 @@ export default function RootLayout({
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Kim Tsok",
-    alternateName: "Kim Kelvin Tsok",
-    jobTitle: "Front-End Developer",
+    name: site.name,
+    alternateName: site.fullName,
+    jobTitle: site.role,
     description: siteDescription,
-    email: "mailto:tsokkim556@gmail.com",
+    email: `mailto:${site.email}`,
     url: siteUrl,
-    sameAs: [
-      "https://github.com/Kim-Tsok",
-      "https://x.com/im_telepathic",
-      "https://www.linkedin.com",
-      "https://www.instagram.com/im_telepathic",
-      "https://www.youtube.com/@pixelbluegames",
-    ],
+    sameAs: socials
+      .filter((s) => s.label !== "WhatsApp")
+      .map((s) => s.href),
   };
 
   const websiteSchema = {
@@ -133,15 +116,16 @@ export default function RootLayout({
     description: siteDescription,
     author: {
       "@type": "Person",
-      name: "Kim Tsok",
+      name: site.name,
     },
   };
 
   return (
-    <html lang="en">
-      <body
-        className={`${_inter.variable} ${_poppins.variable} ${newsreader.variable} font-sans antialiased`}
-      >
+    <html
+      lang="en"
+      className={`${inter.variable} ${poppins.variable} ${newsreader.variable}`}
+    >
+      <body className="font-sans antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
@@ -152,7 +136,17 @@ export default function RootLayout({
         />
         {children}
         <Analytics />
-        <Toaster />
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            style: {
+              background: "var(--ink)",
+              color: "#fff",
+              border: "none",
+              borderRadius: "999px",
+            },
+          }}
+        />
       </body>
     </html>
   );

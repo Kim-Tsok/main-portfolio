@@ -1,115 +1,97 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
+import { ArrowUp, ArrowUpRight, Copy, Download } from "lucide-react";
+import { toast } from "sonner";
+import { site, socials } from "@/lib/site";
+import Reveal from "./reveal";
 
 export default function Contact() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(site.email);
+      toast("Email copied to clipboard");
+    } catch {
+      toast("Couldn't copy. My email is " + site.email);
+    }
+  };
 
   return (
-    <section className="bg-[#eadfd8]/80 px-6 py-12 md:py-24 pb-10" id="contact">
-      <div className="mx-auto max-w-2xl text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="mb-8 text-center"
-        >
-          <h2
-            className={`text-3xl md:text-4xl font-bold text-black mb-6 transition-all duration-700 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
-          >
-            Let's Work Together
-          </h2>
-          <p
-            className={`text-[#634836] text-lg mb-8 leading-relaxed transition-all duration-700 delay-150 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-            style={{ transitionDelay: "150ms" }}
-          >
-            Have a project in mind? I'd love to hear about it and discuss how we
-            can collaborate to bring your ideas to life.
-          </p>
-        </motion.div>
+    <section id="contact" className="px-3 pb-3 md:px-4 md:pb-4">
+      <div className="overflow-hidden rounded-[2rem] bg-brown-deep text-paper">
+        <div className="container-page py-20 md:py-28">
+          <Reveal>
+              <h2 className="max-w-4xl text-4xl font-semibold leading-[1.05] text-white sm:text-6xl md:text-7xl">
+              Have a project in mind?{" "}
+              <span className="font-serif font-normal italic tracking-normal text-tan">
+                Let&apos;s talk.
+              </span>
+            </h2>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/75">
+              Tell me what you&apos;re building and where you want it to go. I&apos;ll get back to you with next steps.
+            </p>
+          </Reveal>
 
-        <Link href="mailto:tsokkim556@gmail.com">
-          <motion.button
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.97 }}
-            className="md:ml-5 max-md:mb-3 px-10 py-4 bg-[#634836] text-white rounded-full font-semibold text-lg cursor-pointer"
-          >
-            Get In Touch
-          </motion.button>
-        </Link>
+          <Reveal delay={0.1} className="mt-12 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a
+              href={`mailto:${site.email}`}
+              className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-paper px-8 font-medium text-ink transition-colors hover:bg-white"
+            >
+              {site.email}
+              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+            <button
+              type="button"
+              onClick={copyEmail}
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-paper/25 px-6 font-medium text-paper transition-colors hover:border-paper/60"
+            >
+              <Copy className="size-4" />
+              Copy email
+            </button>
+            {site.cvUrl && (
+              <a
+                href={site.cvUrl}
+                download
+                className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-paper/25 px-6 font-medium text-paper transition-colors hover:border-paper/60"
+              >
+                <Download className="size-4" />
+                Download CV
+              </a>
+            )}
+          </Reveal>
 
-        <motion.button
-          initial={{ scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.97 }}
-          className="md:ml-5 px-10 py-4 border-[#634836] border-3 text-[#634836] rounded-full font-semibold text-lg cursor-pointer"
-        >
-          Download CV
-        </motion.button>
-
-        <div className="mt-20 flex justify-center gap-8">
-          <a
-            href="https://www.linkedin.com"
-            className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:-translate-y-1"
-            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
-          >
-            LinkedIn
-          </a>
-          <a
-            href="https://x.com/im_telepathic"
-            className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:-translate-y-1"
-            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
-          >
-            Twitter
-          </a>
-          <a
-            href="https://github.com/Kim-Tsok"
-            className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:-translate-y-1"
-            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
-          >
-            GitHub
-          </a>
+          <Reveal delay={0.2}>
+            <ul className="mt-20 grid grid-cols-2 border-t border-paper/15 sm:grid-cols-3 md:grid-cols-5">
+              {socials.map((s) => (
+                <li key={s.label}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between border-b border-paper/15 py-5 pr-4 text-paper/80 transition-colors hover:text-white"
+                  >
+                    {s.label}
+                    <ArrowUpRight className="size-4 text-tan transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </div>
-        <div className="mt-4 flex justify-center gap-8">
-          <a
-            href="https://wa.me/2349139998904"
-            className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:-translate-y-1"
-            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
-          >
-            Whatsapp
-          </a>
-          <a
-            href="https://www.youtube.com/@pixelbluegames"
-            className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:-translate-y-1"
-            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
-          >
-            Youtube
-          </a>
-          <a
-            href="https://www.instagram.com/im_telepathic"
-            className="text-[#634836] hover:text-black font-medium transition-all duration-300 hover:-translate-y-1"
-            style={{ fontFamily: "var(--font-poppins), sans-serif" }}
-          >
-            Instagram
-          </a>
-        </div>
+
+        <footer className="container-page">
+          <div className="flex flex-col gap-4 border-t border-paper/15 py-8 text-sm text-paper/60 sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              &copy; {new Date().getFullYear()} {site.fullName}
+            </p>
+            <a
+              href="#top"
+              className="inline-flex items-center gap-2 transition-colors hover:text-white"
+            >
+              Back to top
+              <ArrowUp className="size-4" />
+            </a>
+          </div>
+        </footer>
       </div>
     </section>
   );
