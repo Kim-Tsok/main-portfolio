@@ -1,30 +1,20 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image, { type ImageLoader } from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Github } from "lucide-react";
-import { isClientProject as isClient, type Project } from "@/lib/data";
+import { ArrowRight, ArrowUpRight, Github } from "lucide-react";
+import {
+  isClientProject as isClient,
+  projectLinks,
+  projectTags,
+  type Project,
+} from "@/lib/data";
 import { cn } from "@/lib/utils";
+import ProjectImage from "./project-image";
 import SectionHeading from "./section-heading";
 
-// Screenshots live on Cloudinary, so let it resize and pick the format.
-const cloudinary: ImageLoader = ({ src, width, quality }) =>
-  src.replace("/upload/", `/upload/f_auto,q_${quality ?? "auto"},w_${width}/`);
-
 type Filter = "all" | "client" | "personal";
-
-// Tags in the database are typed by hand, so tidy the common ones for display.
-const tagNames: Record<string, string> = {
-  html: "HTML",
-  css: "CSS",
-  javascript: "JavaScript",
-  typescript: "TypeScript",
-  "tailwind css": "Tailwind CSS",
-  "daisy ui": "daisyUI",
-  "next.js": "Next.js",
-  shadcn: "shadcn/ui",
-};
 
 export default function Work({ projects }: { projects: Project[] }) {
   const [filter, setFilter] = useState<Filter>("all");
@@ -120,36 +110,23 @@ export default function Work({ projects }: { projects: Project[] }) {
 function ProjectCard({ project }: { project: Project }) {
   const primary = project.link ?? project.github_url ?? project.custom_links?.[0]?.url;
   const client = isClient(project);
-  const tags = project.tech_stack
-    .filter((t) => t.toLowerCase() !== "client")
-    .map((t) => tagNames[t.toLowerCase()] ?? t);
-
-  const links = [
-    project.link && { label: "Live site", href: project.link, icon: ArrowUpRight },
-    project.github_url && { label: "Source", href: project.github_url, icon: Github },
-    ...(project.custom_links ?? []).map((l) => ({
-      label: l.label,
-      href: l.url,
-      icon: ArrowUpRight,
-    })),
-  ].filter(Boolean) as { label: string; href: string; icon: typeof ArrowUpRight }[];
+  const tags = projectTags(project);
+  const links = projectLinks(project);
 
   return (
     <article className="group">
       <a
         href={primary}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener"
         aria-label={`Open ${project.title}`}
         tabIndex={-1}
         className="relative block aspect-[16/10] overflow-hidden rounded-2xl border border-line bg-paper-deep"
       >
         {project.image_url ? (
-          <Image
+          <ProjectImage
             src={project.image_url}
-            loader={project.image_url.includes("res.cloudinary.com") ? cloudinary : undefined}
             alt=""
-            fill
             sizes="(min-width: 768px) 560px, 100vw"
             className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
           />
@@ -169,7 +146,14 @@ function ProjectCard({ project }: { project: Project }) {
             Client project
           </p>
         )}
-        <h3 className="text-2xl font-semibold text-ink">{project.title}</h3>
+        <h3 className="text-2xl font-semibold text-ink">
+          <Link
+            href={`/projects/${project.slug}`}
+            className="decoration-tan/50 underline-offset-4 hover:underline"
+          >
+            {project.title}
+          </Link>
+        </h3>
       </div>
 
       <p className="mt-3 line-clamp-3 leading-relaxed text-brown">
@@ -189,22 +173,30 @@ function ProjectCard({ project }: { project: Project }) {
         </ul>
       )}
 
-      {links.length > 0 && (
-        <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
-          {links.map(({ label, href, icon: Icon }) => (
+      <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+        {links.map(({ label, href, kind }) => {
+          const Icon = kind === "source" ? Github : ArrowUpRight;
+          return (
             <a
               key={href}
               href={href}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener"
               className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-tan/50 underline-offset-4 transition-colors hover:decoration-ink"
             >
               <Icon className="size-4" />
               {label}
             </a>
-          ))}
-        </div>
-      )}
+          );
+        })}
+        <Link
+          href={`/projects/${project.slug}`}
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-brown underline decoration-tan/50 underline-offset-4 transition-colors hover:text-ink hover:decoration-ink"
+        >
+          Details<span className="sr-only"> about {project.title}</span>
+          <ArrowRight className="size-4" />
+        </Link>
+      </div>
     </article>
   );
 }
