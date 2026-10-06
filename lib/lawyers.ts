@@ -73,8 +73,8 @@ export const tiers: Tier[] = [
   },
   {
     name: "Senior Partner",
-    price: 600000,
-    priceLabel: "₦600,000",
+    price: 650000,
+    priceLabel: "₦650,000",
     forWho: "Established firms with multiple offices or a strong brand.",
     features: [
       "Custom design built around the firm's brand",
@@ -84,12 +84,12 @@ export const tiers: Tier[] = [
       "3 months of free updates",
     ],
     delivery: "14 days",
-    edits: "Unlimited edits during the build",
+    edits: "Up to 5 rounds of edits",
   },
   {
     name: "SAN",
-    price: 1000000,
-    priceLabel: "From ₦1,000,000",
+    price: 1500000,
+    priceLabel: "From ₦1,500,000",
     forWho: "Large firms and chambers that need a flagship site.",
     features: [
       "Fully custom website with unlimited pages",
@@ -107,15 +107,15 @@ export const included = [
   "Mobile friendly and fast",
   "WhatsApp button",
   "Contact form that emails the firm",
-  "Hosting set up for you",
-  "Free .com or .com.ng domain for year one",
+  "Domain and hosting set up in the firm's name",
   "You own everything",
 ];
 
 export const addOns = [
-  { name: "Care Plan", price: "₦10,000 / month", detail: "Hosting, backups, small edits and security updates." },
+  { name: "Domain & hosting", price: "Billed at cost / year", detail: "Your .com or .com.ng and hosting, paid separately and registered in the firm's name." },
+  { name: "Care Plan", price: "₦10,000 / month", detail: "Backups, small edits, security updates and keeping the site running." },
   { name: "Extra page", price: "₦15,000 each", detail: "Add a page to any package." },
-  { name: "Content writing", price: "₦5,000 / page", detail: "I write the copy from a short chat with you." },
+  { name: "Content writing", price: "₦10,000 / page", detail: "I write the copy from a short chat with you." },
   { name: "Firm email", price: "₦25,000 / year", detail: "Three professional mailboxes on your domain." },
 ];
 
@@ -141,6 +141,10 @@ export const faqs = [
   {
     q: "Who owns the website and the domain?",
     a: "You do. The domain is registered in the firm's name and I hand over every login when the site goes live.",
+  },
+  {
+    q: "Are the domain and hosting included in the price?",
+    a: "No. They are paid separately each year at cost, and I tell you the exact amount with your quote. I handle the setup, and both are registered in the firm's name so they stay yours.",
   },
   {
     q: "How do I pay?",

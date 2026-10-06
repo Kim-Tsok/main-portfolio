@@ -11,7 +11,7 @@ export const site = {
   cvUrl: null as string | null,
 };
 
-export const whatsappNumber = "2349139998904";
+export const whatsappNumber = "2347016974707";
 
 // WhatsApp click-to-chat link, optionally with a prefilled message.
 export const waLink = (text?: string) =>
