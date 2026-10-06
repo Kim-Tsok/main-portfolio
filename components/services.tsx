@@ -1,4 +1,6 @@
 import type { Service } from "@/lib/data";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import Reveal from "./reveal";
 import SectionHeading from "./section-heading";
 
@@ -39,6 +41,26 @@ export default function Services({ services }: { services: Service[] }) {
             </li>
           ))}
         </ol>
+
+        <Reveal className="mt-10">
+          <Link
+            href="/lawyers"
+            className="group flex flex-col justify-between gap-4 rounded-[1.5rem] border border-line bg-paper/70 p-6 transition-colors hover:border-tan sm:flex-row sm:items-center md:p-8"
+          >
+            <div>
+              <p className="text-xl font-medium text-ink md:text-2xl">
+                Run a law firm?
+              </p>
+              <p className="mt-1 text-brown">
+                Website packages for Nigerian lawyers and chambers, from ₦60,000.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1.5 font-medium text-ink">
+              See law firm packages
+              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </span>
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

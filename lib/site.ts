@@ -11,12 +11,18 @@ export const site = {
   cvUrl: null as string | null,
 };
 
+export const whatsappNumber = "2349139998904";
+
+// WhatsApp click-to-chat link, optionally with a prefilled message.
+export const waLink = (text?: string) =>
+  `https://wa.me/${whatsappNumber}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
+
 export const socials = [
   { label: "GitHub", href: "https://github.com/Kim-Tsok" },
   { label: "X / Twitter", href: "https://x.com/im_telepathic" },
   { label: "Instagram", href: "https://www.instagram.com/im_telepathic" },
   { label: "YouTube", href: "https://www.youtube.com/@pixelbluegames" },
-  { label: "WhatsApp", href: "https://wa.me/2349139998904" },
+  { label: "WhatsApp", href: waLink() },
 ];
 
 export const nav = [

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowUp, ArrowUpRight, Copy, Download } from "lucide-react";
 import { toast } from "sonner";
 import { site, socials } from "@/lib/site";
@@ -83,13 +84,18 @@ export default function Contact() {
             <p>
               &copy; {new Date().getFullYear()} {site.fullName}
             </p>
-            <a
-              href="#top"
-              className="inline-flex items-center gap-2 transition-colors hover:text-white"
-            >
-              Back to top
-              <ArrowUp className="size-4" />
-            </a>
+            <div className="flex items-center gap-6">
+              <Link href="/lawyers" className="transition-colors hover:text-white">
+                Websites for law firms
+              </Link>
+              <a
+                href="#top"
+                className="inline-flex items-center gap-2 transition-colors hover:text-white"
+              >
+                Back to top
+                <ArrowUp className="size-4" />
+              </a>
+            </div>
           </div>
         </footer>
       </div>
