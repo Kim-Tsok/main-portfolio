@@ -88,8 +88,8 @@ export const tiers: Tier[] = [
   },
   {
     name: "SAN",
-    price: 1500000,
-    priceLabel: "From ₦1,500,000",
+    price: 1000000,
+    priceLabel: "From ₦1,000,000",
     forWho: "Large firms and chambers that need a flagship site.",
     features: [
       "Fully custom website with unlimited pages",
