@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
+export {sameOrigin} from './request-origin';
 export async function adminSession(){
  const supabase=await createClient();
  const {data:{user}}=await supabase.auth.getUser();
@@ -8,4 +9,3 @@ export async function adminSession(){
  if(error||isAdmin!==true) return null;
  return {supabase,user};
 }
-export function sameOrigin(req:Request){const origin=req.headers.get('origin');return !origin||origin===new URL(req.url).origin;}

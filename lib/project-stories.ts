@@ -127,7 +127,7 @@ export function projectStory(project: Project) {
   return {
     title: project.title,
     summary: project.summary ?? story?.summary ?? project.description,
-    category: story?.category ?? (project.tech_stack.includes("Client") ? "Client work" : "Personal project"),
+    category: project.category ?? story?.category ?? (project.tech_stack.includes("Client") ? "Client work" : "Personal project"),
     article: project.article != null ? (project.article || project.description) : (story?.article || project.description),
   };
 }

@@ -1,6 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import {publicFetch} from "./public-fetch";
 import snapshot from "./project-snapshot.json";
+import type { ProjectCategory } from "./project-categories";
+import {slugify} from './slug';
+export {slugify} from './slug';
 
 export interface Project {
   id: string;
@@ -19,18 +22,11 @@ export interface Project {
   published?: boolean;
   featured?: boolean;
   sort_order?: number;
+  category?: ProjectCategory;
 }
 
-export const slugify = (text: string) =>
-  text
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
 export const isClientProject = (p: Project) =>
-  p.tech_stack.some((t) => t.toLowerCase() === "client");
+  p.category ? p.category === 'Client work' : p.tech_stack.some((t) => t.toLowerCase() === "client");
 
 // Tags in the database are typed by hand, so tidy the common ones for display.
 const tagNames: Record<string, string> = {

@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google";
+import localFont from "next/font/local";
 
-const serif = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--d1-serif",
-  weight: ["500", "600", "700"],
+const serif = localFont({
+  src: [{path:"../../fonts/cormorant-garamond-latin.woff2",weight:"500 700"}],
+  variable: "--d1-serif", display:"swap",
 });
-
-const sans = Source_Sans_3({
-  subsets: ["latin"],
-  variable: "--d1-sans",
+const sans = localFont({
+  src: [{path:"../../fonts/source-sans-3-latin.woff2",weight:"200 900"}],
+  variable: "--d1-sans", display:"swap",
 });
 
 export const metadata: Metadata = {

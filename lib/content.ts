@@ -5,6 +5,7 @@ import type { Post } from "./posts";
 
 export type Photograph = {id:string;title:string;alt_text:string;caption:string;location:string;taken_at:string|null;image_url:string;storage_path:string|null;sort_order:number};
 export type PersonalItem = {id:string;title:string;description:string;category:string;link:string|null;link_label:string|null;sort_order:number};
+export type BusinessSector = {id:string;title:string;description:string;link:string|null;status:'Planned'|'Available';sort_order:number};
 export type SiteSettings = {resume_url:string;booking_url:string|null;photography_intro:string;intro_description:string;intro_photo_url:string;intro_photo_alt:string};
 export function publicClient(){return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,{auth:{persistSession:false},global:{fetch:publicFetch}});}
 function storageClient(){return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!,{auth:{persistSession:false,autoRefreshToken:false}});}
@@ -14,6 +15,11 @@ export async function getPosts():Promise<Post[]>{
  return (data||[]).map(p=>({...p,publishedAt:p.published_at}));
 }
 export async function getPost(slug:string){return (await getPosts()).find(p=>p.slug===slug);}
+export async function getBusinessSectors():Promise<BusinessSector[]>{
+ const {data,error}=await publicClient().from('business_sectors').select('id,title,description,link,status,sort_order').eq('published',true).is('archived_at',null).order('sort_order');
+ if(error){console.error('Business content unavailable:',error.code);return [];}
+ return data||[];
+}
 export async function getPersonalItems():Promise<PersonalItem[]>{
  const {data,error}=await publicClient().from('personal_content').select('id,title,description,category,link,link_label,sort_order').eq('published',true).is('archived_at',null).order('sort_order');
  if(error){console.error('Personal content unavailable:',error.code);return [];}

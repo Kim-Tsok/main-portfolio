@@ -1,6 +1,6 @@
 # Portfolio content and photography
 
-`/admin` is the content studio. It manages projects (including long Markdown stories), blog posts, Beyond code entries, photography, skills, services, and résumé/Cal.com/gallery settings. Entries support editing and display order. Published entries appear on the site. Archive removes an entry from public lists without deleting it; use Show archive to restore it. Project and article slugs stay stable after creation.
+`/admin` is the content studio. It manages projects (including long Markdown stories), blog posts, Beyond code entries, photography, business sectors, skills, services, and résumé/Cal.com/gallery settings. Entries support editing and display order. Published entries appear on the site. Archive removes an entry from public lists without deleting it; use Show archive to restore it. Project and article slugs are filled from the title for new entries and stay stable after creation.
 
 ## Database setup
 
@@ -32,7 +32,8 @@ The starter notes are seeded from `lib/posts.ts` once. Public routes now read `b
 ## Checks
 
 ```
-node --import tsx --test tests/content-validation.test.ts
+node --import tsx tests/content-validation.test.ts
+node --import tsx tests/article-images.test.ts
 node scripts/database.mjs file tests/content-rls.sql
 npm run lint
 npx tsc --noEmit
@@ -45,3 +46,15 @@ The RLS checks run in a transaction and roll back their draft test rows. No user
 Apply `scripts/005_introduction_card.sql` after migration 003. The Settings tab controls the introduction card’s portrait URL, image description, and short biography (140 characters maximum). The initial portrait is the public GitHub profile image saved locally, so the first screen does not depend on an external avatar service.
 
 The opening loader waits for the card portrait and fonts, then releases the cards to drop into the stack and fan open. Asset failures have a 4.5-second fallback; an unavailable portrait uses initials. Reduced-motion visitors and direct section links skip the entrance choreography. JavaScript-disabled visitors can still read the introduction and use section links.
+
+## Project types, images and business pages
+
+Apply `scripts/006_business_and_media.sql` once after migrations 003–005. It backfills project types, creates the editable business directory and adds a public media bucket. Existing project stories and links are preserved.
+
+Choose Client work, Personal product, Developer tool, Game or Experiment in Projects. This controls the work filters; there is no need to put Client in the tools field. Upload a screenshot directly in Projects or a portrait in Site settings, then save the entry. Blog uploads append an image to the article with the description you provide. Move its Markdown line to the desired paragraph and use Preview before saving. Only supported portfolio image sources render as article images; arbitrary HTML remains escaped.
+
+Project, portrait and blog images have permanent public URLs in `portfolio-media`. Uploading does not publish an entry, but the uploaded asset itself is publicly accessible. Photography stays in the separate private bucket. Both upload destinations require an administrator session and re-encode files without GPS/EXIF metadata.
+
+For businesses controls `/business`. Add or edit a business type, description and display order. Keep Specialized page set to Planned until its destination exists; Available requires a link. The initial list includes the existing law-firm page and planned pages for cleaning, agencies, venues, property businesses and accounting firms. No new specialized sites are created by this migration.
+
+The canonical site URL remains the current domain. Once `kimtsok.dev` is registered and connected in hosting, set `NEXT_PUBLIC_SITE_URL=https://kimtsok.dev` and redeploy to update canonical URLs, sitemap links and metadata.

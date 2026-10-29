@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
+import localFont from "next/font/local";
 
-const serif = Fraunces({
-  subsets: ["latin"],
-  variable: "--d2-serif",
+const serif = localFont({
+  src: [{path:"../../fonts/fraunces-latin.woff2",weight:"100 900"}],
+  variable: "--d2-serif", display:"swap",
 });
-
-const sans = Manrope({
-  subsets: ["latin"],
-  variable: "--d2-sans",
+const sans = localFont({
+  src: [{path:"../../fonts/manrope-latin.woff2",weight:"200 800"}],
+  variable: "--d2-sans", display:"swap",
 });
 
 export const metadata: Metadata = {

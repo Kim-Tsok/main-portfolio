@@ -18,11 +18,11 @@ export default function Work({ projects }: { projects: Project[] }) {
     const rank = (p: Project) => priority.includes(p.slug) ? priority.indexOf(p.slug) : 100;
     return rank(a) - rank(b);
   });
-  const filtered = filter === "Client work" ? ordered.filter(isClientProject) : filter === "Experiments" ? ordered.filter(p => !isClientProject(p) && !priority.slice(0, 3).includes(p.slug)) : ordered;
+  const filtered = filter === "Highlights" ? ordered : filter === "Client work" ? ordered.filter(isClientProject) : filter === "Personal products" ? ordered.filter(p => p.category === 'Personal product') : ordered.filter(p => p.category ? ['Experiment','Developer tool','Game'].includes(p.category) : !isClientProject(p) && !priority.slice(0, 3).includes(p.slug));
   const visible = expanded || filter !== "Highlights" ? filtered : filtered.slice(0, 4);
   return <section id="work" className="work-section section-space" aria-labelledby="work-title">
     <div className="section-top"><div><h2 id="work-title">Things I’ve built<span className="heading-suit" aria-hidden="true">♠</span></h2></div></div>
-    <div className="project-filters" aria-label="Filter work">{["Highlights", "Client work", "Experiments"].map(label => <button key={label} type="button" aria-pressed={filter === label} onClick={() => { setFilter(label); setExpanded(false); }}>{label}</button>)}</div>
+    <div className="project-filters" aria-label="Filter work">{["Highlights", "Client work", "Personal products", "Experiments"].map(label => <button key={label} type="button" aria-pressed={filter === label} onClick={() => { setFilter(label); setExpanded(false); }}>{label}</button>)}</div>
     <div className="project-grid">{visible.map((project, index) => {
       const story = projectStory(project);
       return <ScrollSurface as="article" key={project.id} index={index} className={`project-card project-tone-${index % 4}`}>

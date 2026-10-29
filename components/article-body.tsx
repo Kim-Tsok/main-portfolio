@@ -1,4 +1,6 @@
 import { Fragment } from "react";
+import Image from 'next/image';
+import {mediaLink} from '@/lib/content-validation';
 
 // A deliberately small Markdown renderer. Text is always escaped by React;
 // arbitrary HTML, embedded scripts and remote embeds are never interpreted.
@@ -14,6 +16,11 @@ function inline(text: string) {
 export default function ArticleBody({ text }: { text: string }) {
   const blocks = text.replace(/\r\n/g,"\n").split(/\n\s*\n/);
   return <div className="article-prose">{blocks.map((block,i) => {
+    const image=block.match(/^!\[([^\]\n]*)\]\(([^\s)]+)\)$/);
+    if(image){
+      try{const src=mediaLink(image[2]);if(src&&image[1].trim())return <figure key={i}><Image src={src} alt={image[1]} width={1600} height={1000} unoptimized style={{width:'100%',height:'auto'}}/></figure>;}catch{}
+      return <p key={i}>{block}</p>;
+    }
     if (block.startsWith("### ")) return <h3 key={i}>{inline(block.slice(4))}</h3>;
     if (block.startsWith("## ") || block.startsWith("# ")) return <h2 key={i}>{inline(block.replace(/^#{1,2} /,""))}</h2>;
     if (block.startsWith("> ")) return <blockquote key={i}>{inline(block.replace(/^> /gm,""))}</blockquote>;

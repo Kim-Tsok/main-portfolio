@@ -7,7 +7,7 @@ const invalidate=()=>{for(const tag of ['content','projects','skills','services'
 export async function GET(){
  const session=await adminSession();if(!session)return denied();
  const results=await Promise.all(collections.map(async collection=>({collection,...await session.supabase.from(collection).select('*').order(collection==='site_settings'?'id':'created_at',{ascending:false})})));
- const failed=results.find(r=>r.error);if(failed)return NextResponse.json({error:'Content schema is unavailable. Apply migration 003 before editing.',code:failed.error?.code},{status:503});
+ const failed=results.find(r=>r.error);if(failed)return NextResponse.json({error:'Content schema is unavailable. Apply the latest content migrations before editing.',code:failed.error?.code},{status:503});
  const data=Object.fromEntries(results.map(r=>[r.collection,r.data]));
  const photos=data.photographs||[];const paths=photos.map(p=>p.storage_path).filter(Boolean);
  if(paths.length){const {data:signed}=await session.supabase.storage.from('portfolio-photos').createSignedUrls(paths,1800);const urls=new Map(signed?.map(p=>[p.path,p.signedUrl]));data.photographs=photos.map(p=>({...p,preview_url:p.storage_path?urls.get(p.storage_path):p.image_url}));}

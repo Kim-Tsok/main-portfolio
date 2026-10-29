@@ -16,6 +16,6 @@ export default async function Contact() {
       <div className="closing-connect"><a href={`mailto:${site.email}`} className="closing-email">{site.email}<ArrowUpRight size={20}/></a><div className="closing-extras"><Link href={settings.resume_url}>View résumé<ArrowUpRight size={14}/></Link>{settings.booking_url && <a href={settings.booking_url} target="_blank" rel="noopener noreferrer">Book a call<CalendarDays size={14}/></a>}</div></div>
       <div className="closing-bottom"><nav aria-label="Social profiles">{socials.filter(s=>["GitHub","X / Twitter","Substack"].includes(s.label)).map(s=><a href={s.href} key={s.label} target="_blank" rel="noopener noreferrer">{s.label==="X / Twitter"?"Twitter":s.label}<ArrowUpRight size={12}/></a>)}</nav><a href="#top" className="closing-back">Back to top<ArrowUp size={15}/></a></div>
     </div>
-    <div className="closing-colophon"><span>© {new Date().getFullYear()} {site.fullName}</span><Link href="/lawyers">Websites for law firms<ArrowUpRight size={12}/></Link></div>
+    <div className="closing-colophon"><span>© {new Date().getFullYear()} {site.fullName}</span><Link href="/business">Are you a business?<ArrowUpRight size={12}/></Link></div>
   </ScrollSurface>;
 }
