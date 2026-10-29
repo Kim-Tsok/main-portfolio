@@ -7,8 +7,8 @@ export default function Hero() {
     <div className="intro-copy">
       <h1 id="intro-title" className="sentence-headline">
         <span className="sentence-lead">Hey, I’m</span>{" "}
-        <span className="sentence-name"><span>KIM</span>{" "}<span>TSOK</span></span>{" "}
-        <span className="sentence-tail">and I make things for the web.</span>
+        <span className="sentence-name"><span>KIM</span>{" "}<span>TSOK<span className="name-stop">,</span></span></span>{" "}
+        <span className="sentence-tail">and I build web products.</span>
       </h1>
       <p className="sentence-role">— Product engineer</p>
       <p className="intro-description">Interfaces, databases, and the bits in between. I also make games, write, and find my way around FL Studio.</p>

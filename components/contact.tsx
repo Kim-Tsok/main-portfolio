@@ -1,9 +1,10 @@
+import ScrollSurface from "./scroll-surface";
 import Link from "next/link";
 import { ArrowUpRight, ArrowUp, CalendarDays } from "lucide-react";
 import { site, socials } from "@/lib/site";
 
 export default function Contact() {
-  return <footer id="contact" className="closing-section" aria-labelledby="closing-title">
+  return <ScrollSurface as="footer" treatment="footer" id="contact" className="closing-section" labelledBy="closing-title">
     <div className="closing-panel">
       <div className="closing-topline"><span>Got something in mind?</span><span className="closing-suits" aria-hidden="true">♠ <i>♥</i> ♣ <i>♦</i></span></div>
       <div className="closing-main">
@@ -14,5 +15,5 @@ export default function Contact() {
       <div className="closing-bottom"><nav aria-label="Social profiles">{socials.filter(s=>["GitHub","X / Twitter","Substack"].includes(s.label)).map(s=><a href={s.href} key={s.label} target="_blank" rel="noopener noreferrer">{s.label==="X / Twitter"?"Twitter":s.label}<ArrowUpRight size={12}/></a>)}</nav><a href="#top" className="closing-back">Back to top<ArrowUp size={15}/></a></div>
     </div>
     <div className="closing-colophon"><span>© {new Date().getFullYear()} {site.fullName}</span><Link href="/lawyers">Websites for law firms<ArrowUpRight size={12}/></Link><span>Made with a few wild cards.<span aria-hidden="true"> ♣</span></span></div>
-  </footer>;
+  </ScrollSurface>;
 }

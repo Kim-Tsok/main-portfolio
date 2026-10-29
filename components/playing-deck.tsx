@@ -7,7 +7,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Shuffle } from "lucide-react";
 const cards = [
   { rank: "A", suit: "♠", name: "The engineer", label: "Products", subtitle: "Ideas into working software.", description: "Web products, interfaces, and the systems behind them.", href: "#work", link: "Explore my work", tone: "spade", motif: "ace" },
   { rank: "K", suit: "♦", name: "The collaborator", label: "About me", subtitle: "Something we can build together.", description: "Websites for real businesses, built around what they need.", href: "#about", link: "A little about me", tone: "diamond", motif: "king" },
-  { rank: "Q", suit: "♥", name: "The writer", label: "Writing", subtitle: "There’s more than code in here.", description: "Essays, observations, and notes from whatever I’m making.", href: "#writing", link: "Read a little", tone: "heart", motif: "queen" },
+  { rank: "Q", suit: "♥", name: "The writer", label: "Writing", subtitle: "There’s more than code in here.", description: "Essays, observations, and notes from whatever I’m making.", href: "#blog", link: "Read the blog", tone: "heart", motif: "queen" },
   { rank: "★", suit: "♣", name: "The wild card", label: "Beyond code", subtitle: "A few other sides of me.", description: "Games, music, and a little curiosity about 3D.", href: "#elsewhere", link: "The other stuff", tone: "club", motif: "joker" },
 ];
 
@@ -37,7 +37,7 @@ export default function PlayingDeck() {
       const rect = stage.current.getBoundingClientRect();
       // Leave the original space in flow, so docking cannot shift the page.
       setDocked(rect.bottom < 100);
-      const ids = ["work", "about", "elsewhere", "writing", "contact"];
+      const ids = ["work", "about", "blog", "elsewhere", "contact"];
       let current = "work";
       for (const id of ids) {
         const element = document.getElementById(id);
@@ -89,7 +89,7 @@ export default function PlayingDeck() {
       style={{zIndex:20-index}}>
       <span className="nav-card-rank" aria-hidden="true">{card.motif==="joker"?"J":card.rank}<span>{card.suit}</span></span>
       <span className="nav-card-suit" aria-hidden="true">{card.suit}</span>
-      <span className="nav-card-label">{index===0?"Work":index===1?"About":index===2?"Writing":"Beyond"}</span>
+      <span className="nav-card-label">{index===0?"Work":index===1?"About":index===2?"Blog":"Beyond"}</span>
     </motion.a>)}
     <a className="rail-contact" href="#contact" aria-current={section==="contact"?"location":undefined}>Let’s talk<span aria-hidden="true">↗</span></a>
   </motion.nav>}
