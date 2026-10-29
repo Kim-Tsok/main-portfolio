@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="224" height="192" viewBox="0 0 224 192">
+  <!-- Offset runs form a loose diagonal rhythm rather than a square lattice. -->
+  <g fill="#fff" font-family="monospace" font-size="14" font-weight="500" text-anchor="middle">
+    <text x="12" y="19">+</text><text x="39" y="25">−</text><text x="68" y="15">#</text>
+    <text x="123" y="33">+</text><text x="147" y="43">0</text><text x="183" y="24">−</text><text x="210" y="39">+</text>
+    <text x="25" y="64">#</text><text x="59" y="56">+</text><text x="86" y="72">−</text>
+    <text x="140" y="79">#</text><text x="174" y="65">+</text><text x="201" y="83">1</text>
+    <text x="10" y="108">−</text><text x="43" y="98">1</text><text x="76" y="118">+</text><text x="106" y="100">#</text>
+    <text x="159" y="119">−</text><text x="190" y="107">+</text><text x="219" y="128">#</text>
+    <text x="29" y="151">+</text><text x="63" y="162">#</text><text x="99" y="146">−</text>
+    <text x="132" y="166">+</text><text x="169" y="153">0</text><text x="204" y="174">−</text>
+  </g>
+</svg>

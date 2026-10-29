@@ -1,10 +1,12 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
-import { Poppins, Inter, Newsreader } from "next/font/google";
+import { Poppins, Inter, Newsreader, Barlow_Condensed } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import { site, socials } from "@/lib/site";
 import "./globals.css";
+
+const display = Barlow_Condensed({ subsets: ["latin"], variable: "--font-display", weight: ["600", "700", "800"], display: "swap" });
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,7 +28,7 @@ const newsreader = Newsreader({
 
 const siteUrl = site.url;
 const siteName = site.name;
-const siteTitle = `${site.name} | Front-End Developer Portfolio`;
+const siteTitle = `${site.name} | Product Engineer & Developer`;
 const siteDescription = site.description;
 const siteKeywords = [
   "Kim Tsok",
@@ -42,7 +44,7 @@ const siteKeywords = [
 ];
 
 export const viewport: Viewport = {
-  themeColor: "#eadfd8",
+  themeColor: "#151619",
 };
 
 export const metadata: Metadata = {
@@ -123,7 +125,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${poppins.variable} ${newsreader.variable}`}
+      className={`${inter.variable} ${poppins.variable} ${newsreader.variable} ${display.variable}`}
     >
       <body className="font-sans antialiased">
         <script

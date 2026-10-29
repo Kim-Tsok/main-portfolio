@@ -1,104 +1,18 @@
-"use client";
-
 import Link from "next/link";
-import { ArrowUp, ArrowUpRight, Copy, Download } from "lucide-react";
-import { toast } from "sonner";
+import { ArrowUpRight, ArrowUp, CalendarDays } from "lucide-react";
 import { site, socials } from "@/lib/site";
-import Reveal from "./reveal";
 
 export default function Contact() {
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(site.email);
-      toast("Email copied to clipboard");
-    } catch {
-      toast("Couldn't copy. My email is " + site.email);
-    }
-  };
-
-  return (
-    <section id="contact" className="px-3 pb-3 md:px-4 md:pb-4">
-      <div className="overflow-hidden rounded-[2rem] bg-brown-deep text-paper">
-        <div className="container-page py-20 md:py-28">
-          <Reveal>
-              <h2 className="max-w-4xl text-4xl font-semibold leading-[1.05] text-white sm:text-6xl md:text-7xl">
-              Have a project in mind?{" "}
-              <span className="font-serif font-normal italic tracking-normal text-tan">
-                Let&apos;s talk.
-              </span>
-            </h2>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/75">
-              Tell me what you&apos;re building and where you want it to go. I&apos;ll get back to you with next steps.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1} className="mt-12 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <a
-              href={`mailto:${site.email}`}
-              className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-paper px-8 font-medium text-ink transition-colors hover:bg-white"
-            >
-              {site.email}
-              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-            <button
-              type="button"
-              onClick={copyEmail}
-              className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-paper/25 px-6 font-medium text-paper transition-colors hover:border-paper/60"
-            >
-              <Copy className="size-4" />
-              Copy email
-            </button>
-            {site.cvUrl && (
-              <a
-                href={site.cvUrl}
-                download
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-paper/25 px-6 font-medium text-paper transition-colors hover:border-paper/60"
-              >
-                <Download className="size-4" />
-                Download CV
-              </a>
-            )}
-          </Reveal>
-
-          <Reveal delay={0.2}>
-            <ul className="mt-20 grid grid-cols-2 border-t border-paper/15 sm:grid-cols-3 md:grid-cols-5">
-              {socials.map((s) => (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center justify-between border-b border-paper/15 py-5 pr-4 text-paper/80 transition-colors hover:text-white"
-                  >
-                    {s.label}
-                    <ArrowUpRight className="size-4 text-tan transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
-
-        <footer className="container-page">
-          <div className="flex flex-col gap-4 border-t border-paper/15 py-8 text-sm text-paper/60 sm:flex-row sm:items-center sm:justify-between">
-            <p>
-              &copy; {new Date().getFullYear()} {site.fullName}
-            </p>
-            <div className="flex items-center gap-6">
-              <Link href="/lawyers" className="transition-colors hover:text-white">
-                Websites for law firms
-              </Link>
-              <a
-                href="#top"
-                className="inline-flex items-center gap-2 transition-colors hover:text-white"
-              >
-                Back to top
-                <ArrowUp className="size-4" />
-              </a>
-            </div>
-          </div>
-        </footer>
+  return <footer id="contact" className="closing-section" aria-labelledby="closing-title">
+    <div className="closing-panel">
+      <div className="closing-topline"><span>Got something in mind?</span><span className="closing-suits" aria-hidden="true">♠ <i>♥</i> ♣ <i>♦</i></span></div>
+      <div className="closing-main">
+        <div className="closing-copy"><h2 id="closing-title">YOUR<br/>MOVE<span>.</span></h2><p>A product to build. A role to fill.<br/>An idea you’d like to talk through.</p></div>
+        <div className="closing-invitation"><a href={`mailto:${site.email}`} className="hello-card" aria-label={`Say hello by email: ${site.email}`}><span className="hello-corner" aria-hidden="true">A<span>♠</span></span><span className="hello-arrow" aria-hidden="true"><ArrowUpRight/></span><span className="hello-card-title">Say hello.</span><span className="hello-card-note">My inbox is a good place to start.</span><span className="hello-corner hello-corner-bottom" aria-hidden="true">A<span>♠</span></span></a><span className="closing-handwritten">The next card is yours.</span></div>
       </div>
-    </section>
-  );
+      <div className="closing-connect"><a href={`mailto:${site.email}`} className="closing-email">{site.email}<ArrowUpRight size={20}/></a><div className="closing-extras"><Link href={site.cvUrl}>View résumé<ArrowUpRight size={14}/></Link>{site.bookingUrl && <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer">Book a call<CalendarDays size={14}/></a>}</div></div>
+      <div className="closing-bottom"><nav aria-label="Social profiles">{socials.filter(s=>["GitHub","X / Twitter","Substack"].includes(s.label)).map(s=><a href={s.href} key={s.label} target="_blank" rel="noopener noreferrer">{s.label==="X / Twitter"?"Twitter":s.label}<ArrowUpRight size={12}/></a>)}</nav><a href="#top" className="closing-back">Back to top<ArrowUp size={15}/></a></div>
+    </div>
+    <div className="closing-colophon"><span>© {new Date().getFullYear()} {site.fullName}</span><Link href="/lawyers">Websites for law firms<ArrowUpRight size={12}/></Link><span>Made with a few wild cards.<span aria-hidden="true"> ♣</span></span></div>
+  </footer>;
 }

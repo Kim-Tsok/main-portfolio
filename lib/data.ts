@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
+import snapshot from "./project-snapshot.json";
 
 export interface Project {
   id: string;
@@ -13,9 +14,14 @@ export interface Project {
   created_at: string;
   updated_at: string | null;
   slug: string;
+  article?: string | null;
+  summary?: string | null;
+  published?: boolean;
+  featured?: boolean;
+  sort_order?: number;
 }
 
-const slugify = (text: string) =>
+export const slugify = (text: string) =>
   text
     .toLowerCase()
     .normalize("NFKD")
@@ -74,28 +80,24 @@ function supabase() {
 
 export const getProjects = unstable_cache(
   async (): Promise<Project[]> => {
-    const { data, error } = await supabase()
-      .from("projects")
-      .select(
-        "id, title, description, image_url, tech_stack, link, github_url, custom_links, created_at, updated_at"
-      )
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching projects:", error);
-      return [];
+    let rows: Record<string, unknown>[] = snapshot;
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      try {
+        const { data, error } = await supabase().from("projects").select("*").order("created_at", { ascending: false });
+        if (!error && data) rows = data;
+        else console.error("Project data unavailable; using the public snapshot");
+      } catch { console.error("Project data unavailable; using the public snapshot"); }
     }
-
-    // Titles aren't unique in the table, so fall back to the id if two collide.
     const seen = new Set<string>();
-    return data.map((p) => {
-      let slug = slugify(p.title) || p.id.slice(0, 8);
+    return rows.filter(p => p.published !== false).map((row) => {
+      const p = row as unknown as Project;
+      let slug = p.slug || slugify(p.title) || p.id.slice(0, 8);
       if (seen.has(slug)) slug = `${slug}-${p.id.slice(0, 8)}`;
       seen.add(slug);
       return { ...p, slug };
-    });
+    }).sort((a, b) => (a.sort_order ?? 100) - (b.sort_order ?? 100));
   },
-  ["projects-cache-v2"],
+  ["projects-cache-v3"],
   { revalidate: 60, tags: ["projects"] }
 );
 
