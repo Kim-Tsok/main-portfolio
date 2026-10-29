@@ -1,6 +1,6 @@
 import type React from "react";
 import type { Metadata, Viewport } from "next";
-import { Poppins, Inter, Newsreader, Barlow_Condensed } from "next/font/google";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import { site, socials } from "@/lib/site";
@@ -8,24 +8,38 @@ import "./globals.css";
 import SettingsProvider from "@/components/settings-provider";
 import {getSettings} from "@/lib/content";
 
-const display = Barlow_Condensed({ subsets: ["latin"], variable: "--font-display", weight: ["600", "700", "800"], display: "swap" });
+const display = localFont({
+  src: [
+    { path: "./fonts/barlow-condensed-600.woff2", weight: "600" },
+    { path: "./fonts/barlow-condensed-700.woff2", weight: "700" },
+    { path: "./fonts/barlow-condensed-800.woff2", weight: "800" },
+  ],
+  variable: "--font-display", display: "swap",
+});
 
-const poppins = Poppins({
-  subsets: ["latin"],
+const poppins = localFont({
+  src: [
+    { path: "./fonts/poppins-500.woff2", weight: "500" },
+    { path: "./fonts/poppins-600.woff2", weight: "600" },
+    { path: "./fonts/poppins-700.woff2", weight: "700" },
+  ],
   variable: "--font-poppins",
-  weight: ["500", "600", "700"],
+  display: "swap",
 });
 
-const inter = Inter({
-  subsets: ["latin"],
+const inter = localFont({
+  src: [{ path: "./fonts/inter-latin-variable.woff2", weight: "100 900" }],
   variable: "--font-inter",
+  display: "swap",
 });
 
-const newsreader = Newsreader({
-  subsets: ["latin"],
+const newsreader = localFont({
+  src: [
+    { path: "./fonts/newsreader-latin-variable.woff2", weight: "400 500", style: "normal" },
+    { path: "./fonts/newsreader-latin-italic-variable.woff2", weight: "400 500", style: "italic" },
+  ],
   variable: "--font-newsreader",
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
+  display: "swap",
 });
 
 const siteUrl = site.url;

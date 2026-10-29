@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type CSSProperties } from "react";
 import Image from "next/image";
 import { LayoutGroup, motion, useAnimationControls, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Mail, RotateCcw } from "lucide-react";
@@ -166,12 +166,12 @@ export default function PlayingDeck() {
     </div>
     {docked && <motion.nav layoutRoot className="card-navigation" aria-label="Page sections" initial={false}>
       <a className="rail-home" href="#top" aria-label="Back to top">kt<span aria-hidden="true">↑</span></a>
-      {cards.map((card, index) => <motion.a key={card.tone} layoutId={reduced ? undefined : `card-${index}`} href={card.href} aria-label={index === 1 ? "Beyond code" : undefined}
+      <div className="nav-card-hand">{cards.map((card, index) => <motion.a key={card.tone} layoutId={reduced ? undefined : `card-${index}`} href={card.href} aria-label={index === 1 ? "Beyond code" : undefined}
         aria-current={section === card.href.slice(1) ? "location" : undefined} className={`navigation-card suit-${card.tone}`} initial={false}
-        transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 180, damping: 27 }} style={{ zIndex: 20 - index }}>
+        transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 180, damping: 27 }} style={{ "--hand-angle": `${(index - 1.5) * 7}deg`, "--hand-arc": `${Math.abs(index - 1.5) * 6}px`, "--hand-order": index } as CSSProperties}>
         <span className="nav-card-rank" aria-hidden="true">{card.rank}<span>{card.suit}</span></span><span className="nav-card-suit" aria-hidden="true">{card.suit}</span><span className="nav-card-label">{card.rail}</span>
-      </motion.a>)}
-      <a className="rail-contact" href="#contact" aria-current={section === "contact" ? "location" : undefined}>Let’s talk<span aria-hidden="true">↗</span></a>
+      </motion.a>)}</div>
+      <a className="rail-contact" href="#contact" aria-label="Contact Kim" aria-current={section === "contact" ? "location" : undefined}><Mail size={16} aria-hidden="true"/><span>Contact</span></a>
     </motion.nav>}
   </LayoutGroup>;
 }
