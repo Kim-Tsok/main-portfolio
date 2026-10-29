@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { unstable_cache } from "next/cache";
+import {publicFetch} from "./public-fetch";
 import snapshot from "./project-snapshot.json";
 
 export interface Project {
@@ -69,24 +69,26 @@ export interface Service {
 export interface Skill {
   id: string;
   name: string;
+  category?: string;
 }
 
 function supabase() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { global: { fetch: publicFetch } }
   );
 }
 
-export const getProjects = unstable_cache(
-  async (): Promise<Project[]> => {
+export async function getProjects(): Promise<Project[]> {
     let rows: Record<string, unknown>[] = snapshot;
     if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      rows = [];
       try {
-        const { data, error } = await supabase().from("projects").select("*").order("created_at", { ascending: false });
+        const { data, error } = await supabase().from("projects").select("*").eq("published",true).is("archived_at",null).order("created_at", { ascending: false });
         if (!error && data) rows = data;
-        else console.error("Project data unavailable; using the public snapshot");
-      } catch { console.error("Project data unavailable; using the public snapshot"); }
+        else console.error("Project data unavailable");
+      } catch { console.error("Project data unavailable"); }
     }
     const seen = new Set<string>();
     return rows.filter(p => p.published !== false).map((row) => {
@@ -96,35 +98,27 @@ export const getProjects = unstable_cache(
       seen.add(slug);
       return { ...p, slug };
     }).sort((a, b) => (a.sort_order ?? 100) - (b.sort_order ?? 100));
-  },
-  ["projects-cache-v3"],
-  { revalidate: 60, tags: ["projects"] }
-);
+}
 
 export async function getProject(slug: string) {
   const projects = await getProjects();
   return projects.find((p) => p.slug === slug) ?? null;
 }
 
-export const getSkills = unstable_cache(
-  async (): Promise<Skill[]> => {
-    const { data, error } = await supabase().from("skills").select("id, name");
+export async function getSkills(): Promise<Skill[]> {
+    const { data, error } = await supabase().from("skills").select("id, name, category").is("archived_at",null);
 
     if (error) {
       console.error("Error fetching skills:", error);
       return [];
     }
     return data;
-  },
-  ["skills-cache"],
-  { revalidate: 60, tags: ["skills"] }
-);
+}
 
-export const getServices = unstable_cache(
-  async (): Promise<Service[]> => {
+export async function getServices(): Promise<Service[]> {
     const { data, error } = await supabase()
       .from("services")
-      .select("id, title, description")
+      .select("id, title, description").is("archived_at",null)
       .order("order_index", { ascending: true });
 
     if (error) {
@@ -132,7 +126,4 @@ export const getServices = unstable_cache(
       return [];
     }
     return data;
-  },
-  ["services-cache"],
-  { revalidate: 60, tags: ["services"] }
-);
+}

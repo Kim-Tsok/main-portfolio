@@ -5,6 +5,8 @@ import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import { site, socials } from "@/lib/site";
 import "./globals.css";
+import SettingsProvider from "@/components/settings-provider";
+import {getSettings} from "@/lib/content";
 
 const display = Barlow_Condensed({ subsets: ["latin"], variable: "--font-display", weight: ["600", "700", "800"], display: "swap" });
 
@@ -91,11 +93,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings=await getSettings();
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -136,7 +139,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-        {children}
+        <SettingsProvider value={settings}>{children}</SettingsProvider>
         <Analytics />
         <Toaster
           position="bottom-center"

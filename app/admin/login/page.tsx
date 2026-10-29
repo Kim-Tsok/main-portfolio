@@ -23,16 +23,16 @@ export default function AdminLoginPage() {
     setError(null)
 
     try {
-      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
       if (signInError) throw signInError
 
-      const isAdmin = data.user?.user_metadata?.is_admin === true
+      const { data: isAdmin } = await supabase.rpc("is_admin")
 
-      if (!isAdmin) {
+      if (isAdmin !== true) {
         setError("You don't have admin access")
         await supabase.auth.signOut()
         return
@@ -57,9 +57,9 @@ export default function AdminLoginPage() {
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Email</label>
+                <label htmlFor="login-email" className="block text-sm font-medium mb-1">Email</label>
                 <Input
-                  type="email"
+                  id="login-email" autoComplete="username" type="email"
                   placeholder="m@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -67,8 +67,8 @@ export default function AdminLoginPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Password</label>
-                <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <label htmlFor="login-password" className="block text-sm font-medium mb-1">Password</label>
+                <Input id="login-password" autoComplete="current-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
               <Button type="submit" className="w-full" disabled={isLoading}>

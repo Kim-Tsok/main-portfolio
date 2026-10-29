@@ -33,7 +33,8 @@ export async function POST(req: Request) {
       data: { user },
     } = await supabase.auth.getUser()
 
-    if (!user || user.user_metadata?.is_admin !== true) {
+    const {data: isAdmin} = await supabase.rpc("is_admin")
+    if (!user || isAdmin !== true) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 

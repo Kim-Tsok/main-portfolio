@@ -12,7 +12,10 @@ export default function Work({ projects }: { projects: Project[] }) {
   const [expanded, setExpanded] = useState(false);
   const priority = ["ellipsis-a-calm-place-for-busy-minds", "usiju-event-centre", "scriblr-legacy", "genie"];
   const ordered = [...projects].sort((a, b) => {
-    const rank = (p: Project) => p.featured ? -1 : priority.includes(p.slug) ? priority.indexOf(p.slug) : 100;
+    if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
+    const order=(a.sort_order ?? 100)-(b.sort_order ?? 100);
+    if(order) return order;
+    const rank = (p: Project) => priority.includes(p.slug) ? priority.indexOf(p.slug) : 100;
     return rank(a) - rank(b);
   });
   const filtered = filter === "Client work" ? ordered.filter(isClientProject) : filter === "Experiments" ? ordered.filter(p => !isClientProject(p) && !priority.slice(0, 3).includes(p.slug)) : ordered;

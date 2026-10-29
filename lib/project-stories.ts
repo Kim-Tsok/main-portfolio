@@ -125,10 +125,10 @@ This project is a frontend mockup built with HTML, JavaScript and Tailwind CSS. 
 export function projectStory(project: Project) {
   const story = stories[project.slug];
   return {
-    title: story?.title ?? project.title,
-    summary: project.summary || story?.summary || project.description,
+    title: project.title,
+    summary: project.summary ?? story?.summary ?? project.description,
     category: story?.category ?? (project.tech_stack.includes("Client") ? "Client work" : "Personal project"),
-    article: project.article || story?.article || project.description,
+    article: project.article != null ? (project.article || project.description) : (story?.article || project.description),
   };
 }
 

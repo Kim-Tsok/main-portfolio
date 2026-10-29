@@ -39,7 +39,7 @@ You have two options to create an admin user:
    - **Auto Confirm User**: ✅ Check this box
 4. Click **"Create User"**
 5. After the user is created, click on the user to edit them
-6. Scroll down to **"Raw User Meta Data"**
+6. Scroll down to **"Raw App Meta Data"**
 7. Add the following JSON:
    ```json
    {
@@ -63,3 +63,7 @@ Run the SQL scripts in order to set up your database tables:
 
 You can run these in your Supabase Dashboard → **SQL Editor**.
 
+
+## Current content studio
+
+See `docs/content-management.md` for migrations, publishing and photography. Never grant administrator access through `user_metadata`. Admin authorization uses `portfolio_admins` or trusted `app_metadata`. After changing app metadata, sign out and back in to refresh the session.

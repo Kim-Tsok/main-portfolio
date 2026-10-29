@@ -7,7 +7,8 @@ export type Post = {
   body: string;
 };
 
-// Site-native editorial content. These notes describe existing project features;
+// Initial database seed only. Live pages read blog_posts via lib/content.ts.
+// These notes describe existing project features;
 // they don't invent client results, user numbers, or a development history.
 export const posts: Post[] = [
   {
@@ -84,6 +85,5 @@ You can explore [Ellipsis](https://tryellipsis.space/) or find the original shor
   },
 ];
 
-export const getPost = (slug: string) => posts.find(post => post.slug === slug);
 export const readingMinutes = (body: string) => Math.max(1, Math.ceil(body.split(/\s+/).length / 200));
 export const postDate = (date: string) => new Intl.DateTimeFormat("en", { month:"short", day:"numeric", year:"numeric", timeZone:"Africa/Lagos" }).format(new Date(`${date}T12:00:00Z`));

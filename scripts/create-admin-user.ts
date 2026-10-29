@@ -56,7 +56,7 @@ async function createAdminUser() {
       email,
       password,
       email_confirm: true, // Auto-confirm email
-      user_metadata: {
+      app_metadata: {
         is_admin: true,
       },
     })
@@ -79,8 +79,8 @@ async function createAdminUser() {
         const { data: updateData, error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
           existingUser.id,
           {
-            user_metadata: {
-              ...existingUser.user_metadata,
+            app_metadata: {
+              ...existingUser.app_metadata,
               is_admin: true,
             },
           }
@@ -91,7 +91,7 @@ async function createAdminUser() {
         console.log("✅ Admin access granted to existing user!")
         console.log(`   User ID: ${updateData.user.id}`)
         console.log(`   Email: ${updateData.user.email}`)
-        console.log(`   Admin status: ${updateData.user.user_metadata?.is_admin === true ? "✅ Yes" : "❌ No"}`)
+        console.log(`   Admin status: ${updateData.user.app_metadata?.is_admin === true ? "✅ Yes" : "❌ No"}`)
         return
       }
       throw createError
@@ -104,10 +104,10 @@ async function createAdminUser() {
     console.log("✅ Admin user created successfully!")
     console.log(`   User ID: ${userData.user.id}`)
     console.log(`   Email: ${userData.user.email}`)
-    console.log(`   Admin status: ${userData.user.user_metadata?.is_admin === true ? "✅ Yes" : "❌ No"}`)
+    console.log(`   Admin status: ${userData.user.app_metadata?.is_admin === true ? "✅ Yes" : "❌ No"}`)
     console.log(`\n📝 You can now login at: http://localhost:3000/admin/login`)
     console.log(`   Email: ${email}`)
-    console.log(`   Password: ${password}`)
+
   } catch (error) {
     console.error("❌ Error creating admin user:", error instanceof Error ? error.message : error)
     process.exit(1)
