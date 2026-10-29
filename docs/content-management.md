@@ -39,3 +39,9 @@ npx tsc --noEmit
 ```
 
 The RLS checks run in a transaction and roll back their draft test rows. No user accounts or real photos are created by these checks.
+
+## Introduction card
+
+Apply `scripts/005_introduction_card.sql` after migration 003. The Settings tab controls the introduction card’s portrait URL, image description, and short biography (140 characters maximum). The initial portrait is the public GitHub profile image saved locally, so the first screen does not depend on an external avatar service.
+
+The opening loader waits for the card portrait and fonts, then releases the cards to drop into the stack and fan open. Asset failures have a 4.5-second fallback; an unavailable portrait uses initials. Reduced-motion visitors and direct section links skip the entrance choreography. JavaScript-disabled visitors can still read the introduction and use section links.

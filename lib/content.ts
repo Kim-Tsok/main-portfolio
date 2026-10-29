@@ -5,7 +5,7 @@ import type { Post } from "./posts";
 
 export type Photograph = {id:string;title:string;alt_text:string;caption:string;location:string;taken_at:string|null;image_url:string;storage_path:string|null;sort_order:number};
 export type PersonalItem = {id:string;title:string;description:string;category:string;link:string|null;link_label:string|null;sort_order:number};
-export type SiteSettings = {resume_url:string;booking_url:string|null;photography_intro:string};
+export type SiteSettings = {resume_url:string;booking_url:string|null;photography_intro:string;intro_description:string;intro_photo_url:string;intro_photo_alt:string};
 export function publicClient(){return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,{auth:{persistSession:false},global:{fetch:publicFetch}});}
 function storageClient(){return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!,{auth:{persistSession:false,autoRefreshToken:false}});}
 export async function getPosts():Promise<Post[]>{
@@ -29,6 +29,6 @@ export async function getPhotos():Promise<Photograph[]>{
  return data.filter(p=>!p.storage_path||urls.get(p.storage_path)).map(p=>({...p,image_url:p.storage_path?urls.get(p.storage_path)!:p.image_url}));
 }
 export async function getSettings():Promise<SiteSettings>{
- const {data}=await publicClient().from('site_settings').select('resume_url,booking_url,photography_intro').eq('id','main').single();
- return data||{resume_url:'/resume',booking_url:null,photography_intro:'A few things I stopped to look at. Photographs from my side of the world.'};
+ const {data}=await publicClient().from('site_settings').select('resume_url,booking_url,photography_intro,intro_description,intro_photo_url,intro_photo_alt').eq('id','main').single();
+ return data||{resume_url:'/resume',booking_url:null,photography_intro:'A few things I stopped to look at. Photographs from my side of the world.',intro_description:'I’m based in Nigeria, building web products, client websites, and games.',intro_photo_url:'/kim-tsok-profile.jpg',intro_photo_alt:'Kim Tsok’s profile picture'};
 }

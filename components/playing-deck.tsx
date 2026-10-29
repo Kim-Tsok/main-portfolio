@@ -1,14 +1,18 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { LayoutGroup, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Shuffle } from "lucide-react";
+import Image from "next/image";
+import { LayoutGroup, motion, useAnimationControls, useReducedMotion } from "framer-motion";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Mail, RotateCcw } from "lucide-react";
+import { site } from "@/lib/site";
+import { useHomeEntrance } from "./home-entrance";
+import { useSiteSettings } from "./settings-provider";
 
 const cards = [
-  { rank: "A", suit: "♠", name: "The engineer", label: "Products", subtitle: "Ideas into working software.", description: "Web products, interfaces, and the systems behind them.", href: "#work", link: "Explore my work", tone: "spade", motif: "ace" },
-  { rank: "K", suit: "♦", name: "The collaborator", label: "About me", subtitle: "Something we can build together.", description: "Websites for real businesses, built around what they need.", href: "#about", link: "A little about me", tone: "diamond", motif: "king" },
-  { rank: "Q", suit: "♥", name: "The writer", label: "Writing", subtitle: "There’s more than code in here.", description: "Essays, observations, and notes from whatever I’m making.", href: "#blog", link: "Read the blog", tone: "heart", motif: "queen" },
-  { rank: "★", suit: "♣", name: "The wild card", label: "Beyond code", subtitle: "A few other sides of me.", description: "Games, music, and a little curiosity about 3D.", href: "#elsewhere", link: "The other stuff", tone: "club", motif: "joker" },
+  { rank: "A", suit: "♠", name: "Kim Tsok", label: "Introduction", rail: "About", description: "", href: "#about", link: "About me", tone: "spade", motif: "portrait" },
+  { rank: "J", suit: "♣", name: "Creative", label: "Creative", rail: "Beyond", description: "Games, music, photography, and a little Blender.", href: "#elsewhere", link: "Beyond code", tone: "club", motif: "joker" },
+  { rank: "K", suit: "♦", name: "Projects", label: "Projects", rail: "Work", description: "My own products and websites built for clients.", href: "#work", link: "View projects", tone: "diamond", motif: "king" },
+  { rank: "Q", suit: "♥", name: "Writing", label: "Writing", rail: "Blog", description: "Notes on building things. Essays on everything else.", href: "#blog", link: "Read the blog", tone: "heart", motif: "queen" },
 ];
 
 function CardArt({ motif, suit }: { motif: string; suit: string }) {
@@ -22,76 +26,152 @@ function CardArt({ motif, suit }: { motif: string; suit: string }) {
 }
 
 export default function PlayingDeck() {
+  const { assetsReady, finished, finish } = useHomeEntrance();
+  const settings = useSiteSettings();
   const [active, setActive] = useState(0);
-  const [deal, setDeal] = useState(0);
-  const reduced = useReducedMotion();
   const [docked, setDocked] = useState(false);
-  const [section, setSection] = useState("work");
+  const [section, setSection] = useState("about");
+  const [replaying, setReplaying] = useState(false);
+  const [portraitFailed, setPortraitFailed] = useState(false);
+  const reduced = useReducedMotion();
+  const controls = useAnimationControls();
+  const backControls = useAnimationControls();
   const stage = useRef<HTMLDivElement>(null);
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const busy = !finished || replaying;
+
+  const fanned = (index: number, frontIndex = active) => {
+    const depth = (index - frontIndex + cards.length) % cards.length;
+    return { x: depth * 8 - 16, y: depth * -5, rotate: depth === 0 ? -6 : depth * 5 - 3 };
+  };
 
   useEffect(() => {
+    if (!assetsReady) return;
+    let cancelled = false;
+    const skip = window.matchMedia("(prefers-reduced-motion: reduce)").matches || Boolean(window.location.hash && window.location.hash !== "#top");
+    const open = (index: number) => {
+      const depth = index;
+      return { x: depth * 8 - 16, y: depth * -5, rotate: depth === 0 ? -6 : depth * 5 - 3 };
+    };
+    async function deal() {
+      if (skip) {
+        controls.set(open);
+        backControls.set({ x: 30, y: -5, rotate: 19 });
+      } else {
+        controls.set({ x: 0, y: -window.innerHeight - 520, rotate: -12 });
+        await controls.start((index: number) => ({ x: 0, y: 0, rotate: 0,
+          transition: { duration: .68, delay: .15 + (cards.length - 1 - index) * .13, ease: [.32, 0, .67, 1] } }));
+        if (cancelled) return;
+        await Promise.all([
+          controls.start((index: number) => ({ ...open(index), transition: { type: "spring", stiffness: 145, damping: 23 } })),
+          backControls.start({ x: 30, y: -5, rotate: 19, transition: { type: "spring", stiffness: 145, damping: 23 } }),
+        ]);
+      }
+      if (!cancelled) finish();
+    }
+    void deal();
+    return () => { cancelled = true; controls.stop(); backControls.stop(); };
+  }, [assetsReady, controls, backControls, finish]);
+
+  useEffect(() => {
+    if (!finished || replaying) return;
+    void controls.start((index: number) => {
+      const depth = (index - active + cards.length) % cards.length;
+      return { x: depth * 8 - 16, y: depth * -5, rotate: depth === 0 ? -6 : depth * 5 - 3,
+        transition: reduced ? { duration: 0 } : { type: "spring", stiffness: 170, damping: 25 } };
+    });
+  }, [active, finished, replaying, reduced, controls, docked]);
+
+  useEffect(() => {
+    if (!finished || replaying) return;
     let frame = 0;
     const update = () => {
       frame = 0;
       if (!stage.current) return;
-      const rect = stage.current.getBoundingClientRect();
-      // Leave the original space in flow, so docking cannot shift the page.
-      setDocked(rect.bottom < 100);
-      const ids = ["work", "about", "blog", "elsewhere", "contact"];
-      let current = "work";
-      for (const id of ids) {
+      // The original space stays in flow while the cards become navigation.
+      setDocked(stage.current.getBoundingClientRect().bottom < 100);
+      let current = "about";
+      for (const id of ["work", "about", "blog", "elsewhere", "contact"]) {
         const element = document.getElementById(id);
         if (element && element.getBoundingClientRect().top <= window.innerHeight * .4) current = id;
       }
       setSection(current);
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-    update();
-    window.addEventListener("scroll", schedule, { passive:true });
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     return () => { window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); cancelAnimationFrame(frame); };
-  }, []);
-  const touch = useRef<number | null>(null);
-  const [hasDealt, setHasDealt] = useState(false);
-  const change = (step: number) => setActive(index => (index + step + cards.length) % cards.length);
-  return <LayoutGroup id="portfolio-deck"><div className={`deck-experience${docked ? " is-docked" : ""}`} ref={stage}>
-    <div className="deck-caption"><span className="tiny-suit" aria-hidden="true">♠ ♥ ♣ ♦</span><span>The personal collection</span></div>
-    <div className="deck-stage" onTouchStart={e => { touch.current = e.touches[0].clientX; }} onTouchEnd={e => { if (touch.current === null) return; const distance=e.changedTouches[0].clientX-touch.current; if(Math.abs(distance)>45) change(distance<0?1:-1); touch.current=null; }}>
-      <div className="deck-back" aria-hidden="true"><div className="card-back-border"><span>KT</span><small>KIM TSOK / THE PERSONAL COLLECTION</small></div></div>
-      {!docked && cards.map((card, index) => {
-        const depth = (index - active + cards.length) % cards.length;
-        const front = depth === 0;
-        return <motion.article key={`${index}-${deal}`} layoutId={reduced ? undefined : `card-${index}`} layout={!reduced} className={`playing-card suit-${card.tone}`} style={{ zIndex: 10-depth }}
-          onAnimationComplete={()=>{setHasDealt(true);}}
-          initial={reduced || hasDealt ? false : { x:130+index*20, y:30, rotate:48+index*13, opacity:0 }}
-          animate={{ x: depth*12-26, y: depth*-5, rotate:front?-8:depth*6-4, opacity:1 }}
-          transition={{ type:"spring", stiffness:125, damping:19, delay:deal===0? index*.09: index*.04 }}
-          whileHover={front && !reduced ? { y:-9, rotate:-5, transition:{delay:0,duration:.25} } : undefined}>
-          {!front && <button type="button" className="draw-card-target" onClick={()=>setActive(index)} aria-label={`Draw ${card.label} card`}/>}
-          <div className="card-face-content" aria-hidden={!front}>
-            <div className="card-corner corner-top"><span>{card.motif === "joker" ? "J" : card.rank}</span><span>{card.suit}</span></div>
-            <div className="card-corner corner-bottom"><span>{card.motif === "joker" ? "J" : card.rank}</span><span>{card.suit}</span></div>
-            <div className="card-inner-frame"><div className="card-edition">{card.motif === "joker" ? "Joker / a personal collection" : `${card.rank === "A" ? "Ace" : card.rank === "K" ? "King" : "Queen"} of ${card.tone === "spade" ? "spades" : card.tone === "diamond" ? "diamonds" : "hearts"}`}</div><CardArt motif={card.motif} suit={card.suit}/><h2>{card.name}</h2><p className="card-subtitle">{card.subtitle}</p><p className="card-description">{card.description}</p><a href={card.href} tabIndex={front?0:-1} className="card-action">{card.link}<ArrowUpRight size={14}/></a><div className="card-flourish" aria-hidden="true">— {card.suit} —</div></div>
-          </div>
-        </motion.article>;
-      })}
+  }, [finished, replaying]);
+
+  const change = (step: number) => { if (!busy) setActive(index => (index + step + cards.length) % cards.length); };
+  async function replay() {
+    if (busy) return;
+    setReplaying(true);
+    setActive(0);
+    if (!reduced) {
+      controls.set({ x: 0, y: -window.innerHeight - 520, rotate: -12 });
+      backControls.set({ x: 0, y: 0, rotate: 0 });
+      await controls.start((index: number) => ({ x: 0, y: 0, rotate: 0, transition: { duration: .68, delay: (cards.length - 1 - index) * .13, ease: [.32, 0, .67, 1] } }));
+      await backControls.start({ x: 30, y: -5, rotate: 19, transition: { duration: .3 } });
+    }
+    setReplaying(false);
+  }
+
+  return <LayoutGroup id="portfolio-deck">
+    <div className={`deck-experience${docked ? " is-docked" : ""}`} ref={stage} onKeyDown={event => {
+      if (event.key === "ArrowRight" || event.key === "ArrowLeft") { event.preventDefault(); change(event.key === "ArrowRight" ? 1 : -1); }
+    }}>
+      <div className="deck-stage" role="group" aria-roledescription="carousel" aria-label="Portfolio cards" tabIndex={busy ? -1 : 0}
+        onTouchStart={event => { touch.current = { x: event.touches[0].clientX, y: event.touches[0].clientY }; }}
+        onTouchCancel={() => { touch.current = null; }}
+        onTouchEnd={event => {
+          if (!touch.current) return;
+          const x = event.changedTouches[0].clientX - touch.current.x;
+          const y = event.changedTouches[0].clientY - touch.current.y;
+          if (Math.abs(x) > 45 && Math.abs(x) > Math.abs(y) * 1.2) change(x < 0 ? 1 : -1);
+          touch.current = null;
+        }}>
+        <motion.div className="deck-back" initial={{ x: 0, y: 0, rotate: 0 }} animate={backControls} aria-hidden="true"><div className="card-back-border"><span>KT</span></div></motion.div>
+        {!docked && cards.map((card, index) => {
+          const depth = (index - active + cards.length) % cards.length;
+          const front = depth === 0;
+          return <motion.article key={card.tone} custom={index} layoutId={reduced ? undefined : `card-${index}`} className={`playing-card suit-${card.tone}${index === 0 ? " introduction-card" : ""}`}
+            style={{ zIndex: 10 - depth }} initial={finished ? fanned(index) : { x: 0, y: -1200, rotate: -12 }} animate={controls}
+            whileHover={front && !busy && !reduced ? { y: -8, rotate: -4, transition: { duration: .2 } } : undefined}>
+            {!front && <button type="button" className="draw-card-target" disabled={busy} onClick={() => setActive(index)} aria-label={`Draw ${card.label} card`}/>}
+            <div className="card-face-content" aria-hidden={!front} inert={!front}>
+              <div className="card-corner corner-top" aria-hidden="true"><span>{card.rank}</span><span>{card.suit}</span></div>
+              <div className="card-corner corner-bottom" aria-hidden="true"><span>{card.rank}</span><span>{card.suit}</span></div>
+              <div className="card-inner-frame">
+                {index === 0 ? <>
+                  <div className="intro-card-portrait">{portraitFailed ? <span aria-label="Kim Tsok">KT</span> : <Image data-deck-portrait src={settings.intro_photo_url} alt={settings.intro_photo_alt} width={80} height={80} loading="eager" unoptimized onError={() => setPortraitFailed(true)}/>}</div>
+                  <h2 className="intro-card-name">KIM<br/>TSOK<span>.</span></h2>
+                  <p className="intro-card-role">Product engineer</p>
+                  <p className="card-description">{settings.intro_description}</p>
+                </> : <><CardArt motif={card.motif} suit={card.suit}/><h2>{card.name}</h2><p className="card-description">{card.description}</p></>}
+                <div className="card-links"><a href={card.href} className="card-action">{card.link}<ArrowUpRight size={14} aria-hidden="true"/></a>{index === 0 && <a className="intro-card-email" href={`mailto:${site.email}`} aria-label="Email Kim"><Mail size={16}/></a>}</div>
+                <div className="card-flourish" aria-hidden="true">— {card.suit} —</div>
+              </div>
+            </div>
+          </motion.article>;
+        })}
+      </div>
+      <div className="deck-controls" inert={docked}>
+        <button type="button" disabled={busy} onClick={() => change(-1)} aria-label="Previous card"><ArrowLeft size={17}/></button>
+        <p className="deck-count" aria-live="polite" aria-atomic="true"><span className="sr-only">{cards[active].label}, card </span>{active + 1}<span aria-hidden="true"> / {cards.length}</span><span className="sr-only"> of {cards.length}</span></p>
+        <button type="button" disabled={busy} onClick={() => change(1)} aria-label="Next card"><ArrowRight size={17}/></button>
+        <button type="button" disabled={busy} className="redeal-button" onClick={() => void replay()} aria-label="Replay the card entrance"><RotateCcw size={16}/></button>
+      </div>
     </div>
-    <div className="deck-controls" inert={docked}><button type="button" onClick={()=>change(-1)} aria-label="Previous card"><ArrowLeft size={16}/></button><p aria-live="polite" aria-atomic="true">{cards[active].label}<span> {active+1} / 4</span></p><button type="button" onClick={()=>change(1)} aria-label="Next card"><ArrowRight size={16}/></button><button type="button" className="redeal-button" onClick={()=>{setHasDealt(false);setDeal(d=>d+1);change(1);}} aria-label="Deal the cards again"><Shuffle size={15}/></button></div>
-    <p className="deck-instruction" aria-hidden={docked}>Four cards. A few ways to get to know me.</p>
-  </div>
-  {docked && <motion.nav layoutRoot className="card-navigation" aria-label="Page sections" initial={false}>
-    <a className="rail-home" href="#top" aria-label="Back to top">kt<span aria-hidden="true">↑</span></a>
-    {cards.map((card,index) => <motion.a key={index} layoutId={reduced ? undefined : `card-${index}`} href={card.href}
-      aria-label={index===3?"Beyond code":undefined}
-      aria-current={section===card.href.slice(1)?"location":undefined}
-      className={`navigation-card suit-${card.tone}`} initial={false}
-      transition={{type:"spring",stiffness:180,damping:27,duration:reduced?0:undefined}}
-      style={{zIndex:20-index}}>
-      <span className="nav-card-rank" aria-hidden="true">{card.motif==="joker"?"J":card.rank}<span>{card.suit}</span></span>
-      <span className="nav-card-suit" aria-hidden="true">{card.suit}</span>
-      <span className="nav-card-label">{index===0?"Work":index===1?"About":index===2?"Blog":"Beyond"}</span>
-    </motion.a>)}
-    <a className="rail-contact" href="#contact" aria-current={section==="contact"?"location":undefined}>Let’s talk<span aria-hidden="true">↗</span></a>
-  </motion.nav>}
+    {docked && <motion.nav layoutRoot className="card-navigation" aria-label="Page sections" initial={false}>
+      <a className="rail-home" href="#top" aria-label="Back to top">kt<span aria-hidden="true">↑</span></a>
+      {cards.map((card, index) => <motion.a key={card.tone} layoutId={reduced ? undefined : `card-${index}`} href={card.href} aria-label={index === 1 ? "Beyond code" : undefined}
+        aria-current={section === card.href.slice(1) ? "location" : undefined} className={`navigation-card suit-${card.tone}`} initial={false}
+        transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 180, damping: 27 }} style={{ zIndex: 20 - index }}>
+        <span className="nav-card-rank" aria-hidden="true">{card.rank}<span>{card.suit}</span></span><span className="nav-card-suit" aria-hidden="true">{card.suit}</span><span className="nav-card-label">{card.rail}</span>
+      </motion.a>)}
+      <a className="rail-contact" href="#contact" aria-current={section === "contact" ? "location" : undefined}>Let’s talk<span aria-hidden="true">↗</span></a>
+    </motion.nav>}
   </LayoutGroup>;
 }

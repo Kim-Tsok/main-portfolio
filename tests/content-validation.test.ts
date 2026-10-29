@@ -8,3 +8,9 @@ test('content validation drops role and record ownership injection',()=>{const r
 test('rejects fake dates, invalid slugs and nonboolean publishing flags',()=>{const post={title:'Test',slug:'test',body:'Text',excerpt:'Excerpt',category:'Notes',published_at:'2026-10-29'};assert.throws(()=>validateContent('blog_posts',{...post,published_at:'2026-02-30'}));assert.throws(()=>validateContent('blog_posts',{...post,slug:'../admin'}));assert.throws(()=>validateContent('blog_posts',{...post,published:'true'}));});
 test('skills do not require an unrelated title',()=>{assert.deepEqual(validateContent('skills',{name:'React',category:'Frontend'}),{name:'React',category:'Frontend'});});
 test('restricts writable tables and identifiers',()=>{assert.equal(isCollection('portfolio_admins'),false);assert.equal(validId('1 OR 1=1'),false);});
+test('introduction settings reject oversized biographies and untrusted portraits',()=>{
+ const settings={resume_url:'/resume',booking_url:'',photography_intro:'Photos',intro_description:'I build web products.',intro_photo_url:'/kim-tsok-profile.jpg',intro_photo_alt:'Kim Tsok'};
+ assert.throws(()=>validateContent('site_settings',{...settings,intro_description:'x'.repeat(141)}));
+ assert.throws(()=>validateContent('site_settings',{...settings,intro_photo_url:'https://untrusted.example/portrait.jpg'}));
+ assert.equal('intro_photo_url' in validateContent('site_settings',settings),true);
+});

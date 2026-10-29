@@ -8,14 +8,14 @@ export default async function Contact() {
   const settings=await getSettings();
   return <ScrollSurface as="footer" treatment="footer" id="contact" className="closing-section" labelledBy="closing-title">
     <div className="closing-panel">
-      <div className="closing-topline"><span>Got something in mind?</span><span className="closing-suits" aria-hidden="true">♠ <i>♥</i> ♣ <i>♦</i></span></div>
+      <div className="closing-topline"><span className="closing-suits" aria-hidden="true">♠ <i>♥</i> ♣ <i>♦</i></span></div>
       <div className="closing-main">
-        <div className="closing-copy"><h2 id="closing-title">YOUR<br/>MOVE<span>.</span></h2><p>A product to build. A role to fill.<br/>An idea you’d like to talk through.</p></div>
-        <div className="closing-invitation"><a href={`mailto:${site.email}`} className="hello-card" aria-label={`Say hello by email: ${site.email}`}><span className="hello-corner" aria-hidden="true">A<span>♠</span></span><span className="hello-arrow" aria-hidden="true"><ArrowUpRight/></span><span className="hello-card-title">Say hello.</span><span className="hello-card-note">My inbox is a good place to start.</span><span className="hello-corner hello-corner-bottom" aria-hidden="true">A<span>♠</span></span></a><span className="closing-handwritten">The next card is yours.</span></div>
+        <div className="closing-copy"><h2 id="closing-title">YOUR<br/>MOVE<span>.</span></h2></div>
+        <div className="closing-invitation"><a href={`mailto:${site.email}`} className="hello-card" aria-label={`Say hello by email: ${site.email}`}><span className="hello-corner" aria-hidden="true">A<span>♠</span></span><span className="hello-arrow" aria-hidden="true"><ArrowUpRight/></span><span className="hello-card-title">Say hello.</span><span className="hello-corner hello-corner-bottom" aria-hidden="true">A<span>♠</span></span></a></div>
       </div>
       <div className="closing-connect"><a href={`mailto:${site.email}`} className="closing-email">{site.email}<ArrowUpRight size={20}/></a><div className="closing-extras"><Link href={settings.resume_url}>View résumé<ArrowUpRight size={14}/></Link>{settings.booking_url && <a href={settings.booking_url} target="_blank" rel="noopener noreferrer">Book a call<CalendarDays size={14}/></a>}</div></div>
       <div className="closing-bottom"><nav aria-label="Social profiles">{socials.filter(s=>["GitHub","X / Twitter","Substack"].includes(s.label)).map(s=><a href={s.href} key={s.label} target="_blank" rel="noopener noreferrer">{s.label==="X / Twitter"?"Twitter":s.label}<ArrowUpRight size={12}/></a>)}</nav><a href="#top" className="closing-back">Back to top<ArrowUp size={15}/></a></div>
     </div>
-    <div className="closing-colophon"><span>© {new Date().getFullYear()} {site.fullName}</span><Link href="/lawyers">Websites for law firms<ArrowUpRight size={12}/></Link><span>Made with a few wild cards.<span aria-hidden="true"> ♣</span></span></div>
+    <div className="closing-colophon"><span>© {new Date().getFullYear()} {site.fullName}</span><Link href="/lawyers">Websites for law firms<ArrowUpRight size={12}/></Link></div>
   </ScrollSurface>;
 }

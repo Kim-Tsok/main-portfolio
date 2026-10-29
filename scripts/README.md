@@ -67,3 +67,5 @@ You can run these in your Supabase Dashboard → **SQL Editor**.
 ## Current content studio
 
 See `docs/content-management.md` for migrations, publishing and photography. Never grant administrator access through `user_metadata`. Admin authorization uses `portfolio_admins` or trusted `app_metadata`. After changing app metadata, sign out and back in to refresh the session.
+
+For the introduction card’s editable portrait and biography, run `node scripts/database.mjs file scripts/005_introduction_card.sql` after migration 003.

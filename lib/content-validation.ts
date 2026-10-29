@@ -12,7 +12,7 @@ function slug(value:unknown){const s=text(value,160,true);if(!/^[a-z0-9]+(?:-[a-
 export function validateContent(collection:Collection,input:unknown){
  if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Invalid content.');
  const r=input as Record<string,unknown>;
- if(collection==='site_settings')return {id:'main',resume_url:safeLink(r.resume_url)||'/resume',booking_url:safeLink(r.booking_url),photography_intro:text(r.photography_intro,1000,true)};
+ if(collection==='site_settings')return {id:'main',resume_url:safeLink(r.resume_url)||'/resume',booking_url:safeLink(r.booking_url),photography_intro:text(r.photography_intro,1000,true),intro_description:text(r.intro_description,140,true),intro_photo_url:mediaLink(r.intro_photo_url)||'/kim-tsok-profile.jpg',intro_photo_alt:text(r.intro_photo_alt,200,true)};
  if(collection==='skills')return {name:text(r.name,100,true),category:text(r.category,100,true)};
  const base={title:text(r.title,200,true)};
  if(collection==='services')return {...base,description:text(r.description,2000,true),order_index:number(r.order_index??0)};

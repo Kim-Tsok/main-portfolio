@@ -354,7 +354,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 /* A rounded final card: a large typographic invitation and a physical reply card. */
 .closing-section { padding:12px 0 25px; scroll-margin-top:22px; }
 .closing-panel { position:relative; background:#344edb; color:#fff5d9; border:1px solid #7990ff66; border-radius:42px; padding:28px 42px 23px; overflow:hidden; }
-.closing-topline { display:flex; justify-content:space-between; align-items:center; gap:20px; font-size:11px; }
+.closing-topline { display:flex; justify-content:flex-end; align-items:center; gap:20px; font-size:11px; }
 .closing-suits { font-family:Georgia,serif; font-size:22px; letter-spacing:7px; }.closing-suits i { font-style:normal; color:#ffb09a; }
 .closing-main { display:grid; grid-template-columns:1.15fr 1fr; align-items:center; gap:30px; padding:40px 0 38px; }
 .portfolio-shell .closing-copy h2 { font-family:var(--font-display),Impact,sans-serif; font-size:clamp(88px,11vw,145px); line-height:.8; font-weight:700; letter-spacing:-2px; }
@@ -413,6 +413,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .capsule-header .header-menu-toggle { background:#252930; border:1px solid #ffffff20; border-radius:50%; }
 @media (max-width:699px) {
  .capsule-header { padding-top:9px; }
+ .capsule-header .header-inner { grid-template-columns:1fr auto; padding-inline:1.25rem; }
+ .capsule-header .header-actions { gap:17px; }
+ .brand-initials { font-size:38px; }
  .capsule-header .nav-capsule { display:none; }
 }
 
@@ -427,54 +430,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 @media (min-width:700px) and (max-width:900px) { .capsule-header .nav-capsule>a { padding-inline:10px; }.capsule-header .header-actions { gap:10px; }.post-row { grid-template-columns:100px 1fr 44px; gap:15px; } }
 @media (max-width:699px) { .post-row { grid-template-columns:1fr 35px; gap:10px; padding:22px 0; }.post-row-meta { grid-column:1/-1; flex-direction:row; gap:15px; font-size:9px; }.post-row-copy h3 { font-size:20px; }.post-row-copy>p { font-size:12px; }.post-row-open { width:35px; height:44px; border:0; }.blog-section .section-top { align-items:center; gap:10px; }.blog-section .section-top>.text-link { font-size:10px; gap:5px; }.blog-section .section-top p { max-width:210px; }.blog-archive { padding-top:25px; }.blog-archive-heading { padding:25px 0 30px; }.blog-archive-heading>p:last-child { font-size:13px; }.blog-article .article-header { padding-bottom:28px; }.blog-article .next-project a { font-size:17px; line-height:1.5; } }
 
-/* A legible introduction arranged around the stacked name and the deck. */
-.signature-intro { grid-template-columns:1.05fr 1fr; gap:40px; padding:32px 0 36px; }
-.portfolio-shell .signature-intro .signature-headline { margin:0; font-family:var(--font-inter),system-ui,sans-serif; font-size:27px; font-weight:400; letter-spacing:-.8px; line-height:1.25; color:#eeece2; }
-.signature-intro .signature-headline>span { display:block; margin:0; color:inherit; }
-.signature-greeting { font-size:25px; }
-.signature-intro .signature-headline>.signature-name { margin:14px 0 18px; width:fit-content; }
-.signature-name>span { display:block; font-family:var(--font-display),Impact,sans-serif; font-size:clamp(112px,11.2vw,140px); font-weight:700; line-height:.78; letter-spacing:-2px; }
-.signature-name>span+span { margin-top:8px; color:#a1b2ff; }
-.name-stop { color:#f0785d; }
-.signature-statement { max-width:380px; text-wrap:balance; }
-.signature-role { margin-top:16px; color:#b4c2ff; font-size:12px; }
-.signature-intro .intro-description { font-size:13px; max-width:355px; margin-top:24px; color:#b9bbc5; line-height:1.8; }
-.signature-intro .intro-actions { margin-top:23px; }
-.signature-intro .primary-button { border-radius:999px; padding:12px 18px; }
-.header-mobile-menu a>span { display:flex; gap:12px; align-items:center; }
-.header-mobile-menu i { font-family:Georgia,serif; font-style:normal; color:#9eafff; font-size:18px; }
-@media (min-width:700px) and (max-width:1000px) {
- .capsule-header .header-inner { gap:14px; }
- .capsule-header .nav-capsule>a { padding-inline:13px; }
- .capsule-header .header-actions { gap:12px; }
- .capsule-header .resume-link { display:none; }
- .signature-intro { gap:24px; padding-top:36px; }
- .signature-name>span { font-size:122px; }
- .portfolio-shell .signature-intro .signature-headline { font-size:24px; }
-}
-@media (max-width:699px) {
- .capsule-header .header-inner { min-height:60px; padding-inline:1.25rem; grid-template-columns:1fr auto; }
- .capsule-header .header-actions { gap:17px; }
- .capsule-header .resume-link { display:inline-flex; }
- .brand-initials { font-size:38px; }
- .signature-intro { grid-template-columns:1fr; gap:34px; padding:30px 0 30px; }
- .signature-intro .signature-headline>.signature-name { margin:18px 0 22px; }
- .signature-name>span { font-size:clamp(110px,31vw,150px); }
- .signature-greeting { font-size:22px; }
- .portfolio-shell .signature-intro .signature-headline { font-size:26px; }
- .signature-statement { max-width:340px; }
- .signature-role { margin-top:13px; }
- .signature-intro .intro-description { margin-top:19px; max-width:365px; }
- .signature-intro .deck-experience { margin-top:2px; }
- .signature-intro .deck-stage { height:320px; }
- .signature-intro .playing-card,.signature-intro .deck-back { width:214px; height:298px; margin-left:-112px; }
- .signature-intro .card-inner-frame { inset:12px 23px; }
- .signature-intro .court-art,.signature-intro .ace-illustration { height:108px; }
- .signature-intro .playing-card h2 { font-size:23px; }
- .signature-intro .ace-suit { font-size:100px; }
- .signature-intro .ace-initials { top:43px; }
- .signature-intro .ace-orbit { width:90px; height:90px; }
-}
 /* Detail motion is progressive enhancement: no text is hidden for hydration. */
 .scroll-detail { transition:translate .75s cubic-bezier(.22,1,.36,1) var(--entry-delay,0ms); translate:0 22px; }
 .scroll-detail.has-entered { translate:0 0; }
@@ -483,9 +438,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .project-card { transition:border-color 220ms ease; }.project-card:hover { transform:none; border-color:#829dff85; }.project-screenshot { transition:none; }.project-cover:hover .project-screenshot { transform:none; }
 .closing-panel { position:relative; }.hello-card { transform-origin:50% 90%; }
 @media (prefers-reduced-motion:reduce) { .scroll-detail { translate:none; transition:none; }.section-top.scroll-detail::after { transform:none; transition:none; } }
-@keyframes signature-settle { from { translate:0 15px; rotate:-1deg; } to { translate:0 0; rotate:0deg; } }
-@media (prefers-reduced-motion:no-preference) { .signature-name>span { animation:signature-settle .75s cubic-bezier(.22,1,.36,1) both; }.signature-name>span+span { animation-delay:85ms; } }
-
 /* Beyond code: personal entries and photographs from the content library. */
 .beyond-items { display:grid; grid-template-columns:1fr 1fr; gap:0 35px; }
 .beyond-item { display:flex; gap:17px; border-bottom:1px solid var(--rule); padding:24px 0; }.beyond-item>svg { flex-shrink:0; margin-top:3px; color:#ee987f; }.beyond-item h3 { font-size:16px; font-weight:550; }.beyond-item p { font-size:12px; line-height:1.85; color:#b1b2bd; margin-top:8px; }
@@ -502,3 +454,81 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
  .closing-panel { padding:19px 20px 14px; }.closing-main { grid-template-columns:1fr 105px; gap:12px; padding:28px 0 23px; }.portfolio-shell .closing-copy h2 { font-size:clamp(65px,18vw,82px); letter-spacing:-1px; }.closing-copy>p { font-size:10px; line-height:1.75; margin-top:16px; }.closing-invitation { padding:0; margin:0; }.hello-card { width:101px; height:143px; border-radius:12px; transform:rotate(8deg); }.hello-card::before { inset:7px; border-radius:7px; }.hello-arrow { width:38px; height:38px; margin-bottom:8px; }.hello-arrow>svg { width:28px; height:28px; }.hello-card-title { font-size:20px; letter-spacing:-.5px; }.hello-card-note,.closing-handwritten { display:none; }.hello-corner { top:9px; left:8px; font-size:13px; }.hello-corner>span { font-size:10px; }.hello-corner-bottom { top:auto; left:auto; bottom:9px; right:8px; }.closing-connect { gap:0; padding:6px 0; }.closing-email { font-size:14px; min-height:36px; }.closing-extras>a { min-height:29px; }.closing-bottom { padding-top:7px; }.closing-bottom a { min-height:33px; }.closing-colophon { font-size:8px; }
 }
 @media (max-width:699px) { .closing-main { grid-template-columns:minmax(0,1fr) 88px; gap:10px; }.closing-copy { min-width:0; }.portfolio-shell .closing-copy h2 { font-size:clamp(53px,14vw,62px); }.hello-card { width:88px; height:126px; }.hello-card-title { font-size:17px; }.hello-arrow { width:33px; height:33px; }.hello-arrow>svg { width:25px; height:25px; } }
+
+/* The opening is a deck. Its first card holds the introduction. */
+.entrance-overlay { position:fixed; inset:0; z-index:200; display:grid; place-items:center; background:#151619; color:#eeece2; }
+.home-entrance[data-assets-ready="false"] .entrance-content { visibility:hidden; }
+.deck-loader { display:flex; flex-direction:column; align-items:center; gap:30px; }
+.deck-loader>p { font-family:var(--font-inter),sans-serif; font-size:13px; color:#c1c5d1; }
+.loader-cards { position:relative; width:80px; height:90px; }
+.loader-cards>span { position:absolute; inset:0; display:grid; place-items:center; font-family:Georgia,serif; font-size:30px; border:1px solid #eae8d64d; border-radius:9px; background:#294bc2; color:#f5efcc; transform-origin:50% 90%; }
+.loader-cards>span:nth-child(1) { rotate:-18deg; translate:-12px 3px; }
+.loader-cards>span:nth-child(2) { rotate:14deg; translate:10px 1px; }
+.loader-cards>span:last-child { background:#f8f5e6; color:#294bc2; animation:loader-breathe 1.3s ease-in-out infinite; }
+@keyframes loader-breathe { 50% { transform:translateY(-7px) rotate(-5deg); } }
+.portfolio-shell .deck-only-intro { display:block; padding:24px 0 38px; }
+.deck-only-intro .deck-experience { width:100%; max-width:580px; margin:0 auto; }
+.deck-only-intro .deck-caption { font-size:11px; color:#b9bdcb; margin-bottom:16px; gap:14px; }
+.deck-only-intro .deck-stage { height:510px; }
+.deck-only-intro .playing-card,.deck-only-intro .deck-back { width:334px; height:470px; margin-left:-167px; top:20px; }
+.deck-only-intro .playing-card { transform-origin:50% 85%; border-radius:15px; box-shadow:1px 2px 0 #0004,0 18px 45px #0004; }
+.deck-only-intro .card-inner-frame { inset:17px 31px; padding:12px 12px 9px; border-radius:6px; display:flex; flex-direction:column; align-items:center; }
+.deck-only-intro .card-edition { font-size:11px; }
+.deck-only-intro .card-corner { font-size:23px; }
+.deck-only-intro .card-corner>span:last-child { font-size:17px; }
+.deck-only-intro .corner-top { top:15px; left:10px; }
+.deck-only-intro .corner-bottom { bottom:15px; right:10px; }
+.deck-only-intro .court-art { height:0; flex:1 1 0; min-height:90px; max-height:180px; margin:8px 0 13px; }
+.portfolio-shell .deck-only-intro .playing-card h2 { font-size:36px; line-height:1; }
+.deck-only-intro .card-description { max-width:240px; font-size:12px; line-height:1.65; margin:14px auto 7px; color:#3f505d; }
+.deck-only-intro .card-links { display:flex; justify-content:center; align-items:center; gap:10px; width:100%; margin-top:auto; }
+.deck-only-intro .card-action { min-height:44px; margin:0; font-size:11px; }
+.deck-only-intro .card-flourish { font-size:10px; margin-top:3px; }
+.intro-card-portrait { width:68px; height:68px; flex-shrink:0; border-radius:50%; overflow:hidden; border:1px solid #172d5330; background:#e1e7d5; margin:24px auto 14px; }
+.intro-card-portrait img { display:block; width:100%; height:100%; object-fit:cover; }
+.intro-card-portrait>span { display:grid; place-items:center; height:100%; color:#172d53; font-family:var(--font-newsreader),Georgia,serif; font-size:28px; }
+.intro-card-greeting { font-family:var(--font-newsreader),Georgia,serif; font-style:italic; font-size:16px; }
+.portfolio-shell .deck-only-intro .playing-card .intro-card-name { font-size:64px; line-height:.79; letter-spacing:-.8px; margin-top:16px; }
+.intro-card-name>span { color:#b73d2c; }
+.intro-card-role { font-size:11px; margin-top:12px; color:#394c5e; }
+.deck-only-intro .introduction-card .card-description { margin-top:12px; }
+.intro-card-email { display:grid; place-items:center; width:44px; height:44px; border:1px solid #172d5335; border-radius:50%; }
+.intro-card-email:hover { color:#fffdf0; background:#214cda; border-color:#214cda; }
+.deck-only-intro .deck-back { border-radius:15px; }
+.deck-only-intro .deck-controls { gap:10px; padding-top:5px; }
+.deck-only-intro .deck-controls p { min-width:80px; font-size:12px; }
+.deck-only-intro .deck-controls p>span:not(.sr-only) { display:inline; font-size:12px; margin:0; }
+.deck-only-intro .deck-controls button:disabled { cursor:default; opacity:.45; }
+.deck-only-intro .deck-instruction { font-size:11px; margin-top:12px; color:#aeb3c1; }
+@media (max-width:699px) {
+ .portfolio-shell .deck-only-intro { padding:19px 0 30px; }
+ .deck-only-intro .deck-experience { max-width:350px; margin:0 auto; }
+ .deck-only-intro .deck-caption { font-size:10px; margin-bottom:16px; gap:10px; }
+ .deck-only-intro .tiny-suit { font-size:13px; letter-spacing:4px; }
+ .deck-only-intro .deck-stage { height:447px; }
+ .deck-only-intro .playing-card,.deck-only-intro .deck-back { width:270px; height:408px; margin-left:-135px; top:20px; }
+ .deck-only-intro .card-inner-frame { inset:15px 25px; padding:9px 9px 7px; }
+ .deck-only-intro .card-corner { font-size:19px; }
+ .deck-only-intro .card-corner>span:last-child { font-size:14px; }
+ .deck-only-intro .corner-top { top:13px; left:8px; }
+ .deck-only-intro .corner-bottom { bottom:13px; right:8px; }
+ .deck-only-intro .card-edition { font-size:10px; }
+ .intro-card-portrait { width:56px; height:56px; margin-top:20px; margin-bottom:12px; }
+ .intro-card-greeting { font-size:15px; }
+ .portfolio-shell .deck-only-intro .playing-card .intro-card-name { font-size:56px; margin-top:14px; }
+ .intro-card-role { font-size:10px; margin-top:10px; }
+ .deck-only-intro .card-description { font-size:11px; line-height:1.65; margin-top:12px; }
+ .deck-only-intro .court-art { height:0; max-height:145px; margin:8px 0 16px; }
+ .portfolio-shell .deck-only-intro .playing-card:not(.introduction-card) h2 { font-size:31px; }
+ .deck-only-intro .card-action { font-size:10px; }
+ .deck-only-intro .card-links { gap:5px; }
+ .deck-only-intro .deck-controls { gap:8px; padding-top:0; }
+ .deck-only-intro .deck-controls p { min-width:80px; }
+ .deck-only-intro .deck-instruction { font-size:10px; margin-top:10px; }
+}
+@media (max-width:360px) {
+ .deck-only-intro .playing-card,.deck-only-intro .deck-back { width:248px; margin-left:-124px; left:calc(50% + 28px); }
+ .deck-only-intro .card-inner-frame { inset-inline:23px; padding-inline:6px; }
+ .deck-only-intro .deck-controls { gap:4px; }
+}
+@media (prefers-reduced-motion:reduce) { .loader-cards>span:last-child { animation:none; } }
