@@ -2,6 +2,6 @@
 // cache: a temporary failure must not turn into a cached empty content library.
 export const publicFetch: typeof fetch = (input,init) => {
  const headers=new Headers(init?.headers);
- headers.set('x-portfolio-read-version','business-v1');
+ headers.set('x-portfolio-read-version','industries-v1');
  return fetch(input,{...init,headers,cache:'force-cache',next:{revalidate:60,tags:['content','projects','skills','services']}});
 };

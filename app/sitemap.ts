@@ -22,6 +22,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site.url}/blog`, lastModified: posts.length ? new Date(`${posts[0].publishedAt}T12:00:00+01:00`) : undefined, changeFrequency: "weekly", priority: 0.8 },
     {url:`${site.url}/photography`,changeFrequency:"monthly",priority:0.6},
     {url:`${site.url}/business`,changeFrequency:"monthly",priority:0.8},
+    {url:`${site.url}/business/cleaning`,changeFrequency:"monthly",priority:0.8},
+    {url:`${site.url}/business/landscaping`,changeFrequency:"monthly",priority:0.8},
     {url:`${site.url}/simple`,changeFrequency:"monthly",priority:0.6},
     {url:`${site.url}/projects`,changeFrequency:"weekly",priority:0.9},
     ...posts.map(post => ({ url: `${site.url}/blog/${post.slug}`, lastModified: new Date(`${post.publishedAt}T12:00:00+01:00`), changeFrequency: "monthly" as const, priority: 0.7 })),

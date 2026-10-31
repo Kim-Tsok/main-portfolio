@@ -1,0 +1,26 @@
+.banner { background:var(--text); color:var(--base); display:flex; gap:15px; justify-content:center; align-items:center; flex-wrap:wrap; padding:10px 20px; font-size:11px; }
+.banner a { min-height:28px; display:inline-flex; align-items:center; text-decoration:underline; text-underline-offset:4px; }
+.demo .wordmark { font-size:22px; letter-spacing:-.06em; font-weight:600; }
+.demo .hero { padding-top:30px; }
+.demo .hero h1 { font-size:clamp(44px,6vw,84px); }
+.note { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:60px; }
+.note p { max-width:520px; }
+.enquiry { display:grid; grid-template-columns:1fr 1fr; gap:80px; }
+.enquiry>div>p { margin-top:25px; max-width:420px; }
+.form { background:var(--accent); padding:30px; border-radius:18px; }
+.form>p { font-size:12px; margin-bottom:24px; }
+.form label { display:block; font-size:13px; font-weight:550; margin-top:18px; }
+.form input,.form select { display:block; width:100%; min-width:0; min-height:48px; padding:10px 12px; margin-top:7px; background:var(--base); color:var(--text); border:1px solid var(--rule); border-radius:6px; font:inherit; color-scheme:light; }
+.form small { display:block; margin-top:6px; font-size:11px; font-weight:400; }
+.form button { margin-top:26px; width:100%; }
+.confirmation { margin-top:25px; border-top:1px solid var(--rule); padding-top:24px; }
+.confirmation p { font-size:13px; margin-top:12px; overflow-wrap:anywhere; }
+@media(max-width:760px){.note,.enquiry { grid-template-columns:1fr; gap:28px; }.form { padding:23px; }.demo .wordmark { font-size:19px; }.banner { gap:5px 15px; }.banner a { min-height:34px; }}
+
+.galleryNote { margin-top:22px; font-size:13px; }
+.gallery { display:grid; grid-template-columns:1fr 1fr; gap:25px; margin-top:30px; }
+.gallery figure { margin:0; }
+.gallery figure>div { position:relative; height:270px; overflow:hidden; border-radius:5px; }
+.gallery img { object-fit:cover; }
+.gallery figcaption { margin-top:12px; font-size:13px; }
+@media(max-width:760px){.gallery { grid-template-columns:1fr; gap:25px; }.gallery figure>div { height:240px; }}

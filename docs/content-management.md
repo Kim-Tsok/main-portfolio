@@ -68,3 +68,11 @@ The introduction description has a 140-character limit and counter. Successful s
 ## Simplified portfolio
 
 `/simple` offers a text-only portfolio using the same published projects, skills, blog posts, personal entries and site settings. It has no card deck, image gallery or entrance animation. The homepage links to it below the deck controls and from the opening loader. A Full version link returns to the main homepage.
+
+## Cleaning and lawn-care websites
+
+Apply `scripts/007_business_pages.sql` to link the cleaning page and add the landscaping/lawn-care directory entry. The migration preserves existing copy and publishing settings. The public business directory focuses on these two industries. Other directory records remain in admin for future use.
+
+Directory descriptions and visibility remain editable in For businesses. Industry page copy is in `lib/business-pages.ts`; layouts and demo styles are under `app/business/[sector]/`. Each industry page has a scoped package, a Get a quote email link and a demo section.
+
+Demo businesses are fictional. Forms only generate a local preview: they do not send messages, charge money, store enquiries or book jobs. The sample sites are marked noindex and excluded from the sitemap. Service pages are included in the sitemap. Photography credits are in `public/business/README.md`.
