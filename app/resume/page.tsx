@@ -1,9 +1,32 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import Header from "@/components/header";
-import { site } from "@/lib/site";
-import { getProjects, projectTags } from "@/lib/data";
-import { projectStory } from "@/lib/project-stories";
-import PrintButton from "./print-button";
-export const metadata:Metadata={title:"Résumé",description:"Kim Kelvin Tsok — product engineer based in Nigeria. Selected projects, technical skills and contact information.",alternates:{canonical:"/resume"}};
-export default async function Resume(){const projects=await getProjects();return <div className="portfolio-shell"><Header/><main className="container-page"><article className="resume-sheet"><h1>{site.fullName}</h1><p>Product engineer · Nigeria</p><p><a href={`mailto:${site.email}`}>{site.email}</a> / <a href="https://github.com/Kim-Tsok">GitHub</a></p><h2>Profile</h2><p>I build web products and client websites, working across interfaces, databases, authentication and APIs. My work includes a notes app, websites for businesses, developer tools and games.</p><h2>Selected work</h2>{projects.filter(p=>["ellipsis-a-calm-place-for-busy-minds","usiju-event-centre","scriblr-legacy"].includes(p.slug)).map(p=><div key={p.id} className="mb-5"><h3><Link href={`/projects/${p.slug}`}>{projectStory(p).title}</Link></h3><p>{projectStory(p).summary}</p><p>{projectTags(p).join(", ")}</p></div>)}<h2>Technical skills</h2><ul><li>React, Next.js, TypeScript, HTML, CSS and Tailwind CSS</li><li>Node.js, PostgreSQL, Supabase, authentication and API integrations</li><li>Git, Figma and Astro</li><li>Python, Unity and C# for game projects</li></ul><PrintButton/><Link className="text-link ml-4" href="/#contact">Get in touch</Link></article></main></div>}
+import type {Metadata} from 'next';
+import Link from 'next/link';
+import {ArrowLeft,Download} from 'lucide-react';
+import Header from '@/components/header';
+import resumes from '@/lib/resumes.json';
+import PrintButton from './print-button';
+import styles from './resume.module.css';
+
+export const metadata:Metadata={title:'Résumé',description:'Kim Tsok’s frontend and full-stack engineering résumés. Read online or download a PDF or editable Word version.',alternates:{canonical:'/resume'}};
+type Props={searchParams:Promise<{role?:string}>};
+export default async function Resume({searchParams}:Props){
+ const {role}=await searchParams;
+ const current=resumes.versions.find(version=>version.id===role)||resumes.versions[1];
+ return <div className="portfolio-shell">
+  <a href="#main" className="skip-link">Skip to content</a><Header/>
+  <main id="main" className={`container-page ${styles.page}`}>
+   <header className={styles.intro}><Link href="/" className="breadcrumb"><ArrowLeft size={14}/>Back home</Link><h1>Résumé.</h1><p>Choose the version that fits the role.</p></header>
+   <section className={styles.downloads} aria-label="Résumé downloads">{resumes.versions.map(version=><article key={version.id}><h2>{version.title}</h2><p>{version.audience}</p><div><a href={`/resumes/${version.filename}.pdf`} download><Download size={15} aria-hidden="true"/>Download PDF</a><a href={`/resumes/${version.filename}.docx`} download>Word (.docx)</a></div></article>)}</section>
+   <div className={styles.previewHeader}><h2>Read online</h2><nav aria-label="Résumé versions">{resumes.versions.map(version=><Link key={version.id} href={`/resume?role=${version.id}`} scroll={false} aria-current={version.id===current.id?'page':undefined}>{version.id==='frontend'?'Frontend':'Full stack'}</Link>)}</nav></div>
+   <article className={`resume-sheet ${styles.sheet}`} aria-label={`${current.title} résumé`}>
+    <h1>{resumes.name}</h1><p className={styles.role}>{current.title} · {resumes.location}</p><p className={styles.contact}><a href={`mailto:${resumes.email}`}>{resumes.email}</a><a href={resumes.github}>GitHub</a><a href={resumes.linkedin}>LinkedIn</a></p>
+    <h2>Profile</h2><p>{current.summary}</p>
+    <h2>Skills</h2><ul>{current.skills.map(skill=><li key={skill}>{skill}</li>)}</ul>
+    <h2>Experience</h2>{current.experience.map(job=><section key={job.organization} className={styles.entry}><div><h3>{job.role}</h3><span>{job.dates}</span></div><p>{job.organization}</p><ul>{job.bullets.map(bullet=><li key={bullet}>{bullet}</li>)}</ul></section>)}
+    <h2>Selected projects</h2>{current.projects.map(project=><section key={project.name} className={styles.entry}><h3><a href={project.url}>{project.name}</a></h3><p>{project.stack}</p><ul>{project.bullets.map(bullet=><li key={bullet}>{bullet}</li>)}</ul></section>)}
+    <h2>Education</h2><p>{resumes.education}</p><p>{resumes.educationDates}</p>
+    <h2>Certification and award</h2><ul>{resumes.credentials.map(credential=><li key={credential}>{credential}</li>)}</ul>
+    <div className={styles.print}><PrintButton/></div>
+   </article>
+  </main>
+ </div>;
+}

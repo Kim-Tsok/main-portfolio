@@ -1,0 +1,57 @@
+{
+  "name": "Kim Tsok",
+  "location": "Nigeria",
+  "email": "tsokkim556@gmail.com",
+  "website": "https://kimtsok.vercel.app",
+  "github": "https://github.com/Kim-Tsok",
+  "linkedin": "https://www.linkedin.com/in/kim-tsok-5414a8418",
+  "education": "B.Sc. Computer Science, Air Force Institute of Technology, Kaduna, Nigeria",
+  "educationDates": "2025 - Present | Expected graduation June 2029",
+  "credentials": ["Full Stack Web Development Certificate, Kids Code Club Africa, 2024", "Male Innovator of the Year, Kids Code Club Africa, 2023"],
+  "versions": [
+    {
+      "id": "frontend",
+      "title": "Frontend Engineer",
+      "audience": "Frontend and React roles",
+      "filename": "Kim-Tsok-Frontend-Engineer-Resume",
+      "summary": "Frontend engineer building React and Next.js interfaces for publishing products and client websites. Experience with TypeScript, responsive layouts, reusable components, API integration and teaching web development.",
+      "skills": [
+        "Languages: TypeScript, JavaScript, HTML, CSS",
+        "Frontend: React, Next.js App Router, Tailwind CSS, shadcn/ui, responsive design, accessible forms",
+        "Tools and integrations: Git, Figma, Vercel, Cloudinary, REST APIs, Supabase"
+      ],
+      "experience": [
+        {"role":"Frontend Developer and Founder", "organization":"Scriblr | Independent product", "dates":"Nov 2024 - Present", "bullets":["Built publishing and reading interfaces with Next.js, TypeScript and Tailwind CSS, including content feeds, authoring and profile pages.","Developed reusable interface components for navigation, forms and content presentation; maintained an earlier React implementation."]},
+        {"role":"Freelance Web Developer and Designer", "organization":"Usiju World Event Centre | Client project", "dates":"Dec 2025 - Jan 2026", "bullets":["Delivered a venue showcase and booking website using Next.js, Tailwind CSS and shadcn/ui, connecting the interface to Supabase and Resend email notifications.","Built responsive booking and gallery interfaces and integrated Cloudinary media delivery with Next.js image handling."]},
+        {"role":"Coding Instructor", "organization":"Blue Algorithm Tech Ltd. | Part time", "dates":"Aug 2024 - Oct 2025", "bullets":["Taught JavaScript, React component patterns and Tailwind CSS; guided learners through responsive layouts, state management and frontend projects."]},
+        {"role":"Freelance Frontend Developer and Designer", "organization":"Dominion Homes | Client project", "dates":"Aug 2024 - Oct 2024", "bullets":["Translated a client brief into a responsive React website using semantic HTML and Tailwind CSS."]}
+      ],
+      "projects": [
+        {"name":"Ellipsis", "url":"https://tryellipsis.space", "stack":"Next.js, TypeScript, Tailwind CSS", "bullets":["Built interfaces for capturing and organising notes, search and reminders, connected to authenticated account and database workflows."]},
+        {"name":"Genie", "url":"https://genie-online-ide.vercel.app", "stack":"HTML, JavaScript, Tailwind CSS", "bullets":["Built a browser-based HTML, CSS and JavaScript editor with an immediate preview, keeping code and output in one workspace."]}
+      ]
+    },
+    {
+      "id": "fullstack",
+      "title": "Full Stack Engineer",
+      "audience": "Full-stack and product engineering roles",
+      "filename": "Kim-Tsok-Full-Stack-Engineer-Resume",
+      "summary": "Full-stack engineer building web products and client websites with TypeScript, Next.js and PostgreSQL. Work spans user interfaces, authentication, database access, booking flows and transactional email, with experience taking personal products from idea to implementation.",
+      "skills": [
+        "Languages and frontend: TypeScript, JavaScript, HTML, CSS, React, Next.js, Tailwind CSS",
+        "Backend and data: PostgreSQL, Supabase, Prisma, Neon, Better Auth, Row Level Security, REST APIs, Resend",
+        "Tools: Git, Vercel, Cloudinary, Figma"
+      ],
+      "experience": [
+        {"role":"Full Stack Developer and Founder", "organization":"Scriblr | Independent product", "dates":"Nov 2024 - Present", "bullets":["Built a publishing platform with Next.js, TypeScript and Supabase, connecting content authoring and discovery interfaces to account and database workflows.","Integrated PostgreSQL data access and Row Level Security policies to control access to user-owned content."]},
+        {"role":"Freelance Web Developer and Designer", "organization":"Usiju World Event Centre | Client project", "dates":"Dec 2025 - Jan 2026", "bullets":["Delivered a client venue showcase and booking platform with Next.js and Supabase, including booking forms and transactional email through Resend.","Integrated Cloudinary media with responsive gallery pages and an administrative booking workflow."]},
+        {"role":"Coding Instructor", "organization":"Blue Algorithm Tech Ltd. | Part time", "dates":"Aug 2024 - Oct 2025", "bullets":["Taught JavaScript, React and Tailwind CSS; helped learners implement components, manage frontend state and complete web projects."]},
+        {"role":"Freelance Frontend Developer and Designer", "organization":"Dominion Homes | Client project", "dates":"Aug 2024 - Oct 2024", "bullets":["Delivered a responsive React website from a client brief using semantic HTML and Tailwind CSS."]}
+      ],
+      "projects": [
+        {"name":"Ellipsis", "url":"https://tryellipsis.space", "stack":"Next.js, TypeScript, PostgreSQL, Prisma, Better Auth", "bullets":["Built a notes product with account authentication, note and reminder workflows, and PostgreSQL persistence using Prisma and Better Auth."]},
+        {"name":"Portfolio content studio", "url":"https://kimtsok.vercel.app", "stack":"Next.js, Supabase, PostgreSQL", "bullets":["Built an admin editor for projects, articles and photography with draft publishing, server-side validation, Row Level Security and private image storage."]}
+      ]
+    }
+  ]
+}
