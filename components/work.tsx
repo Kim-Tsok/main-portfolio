@@ -7,9 +7,9 @@ import { projectStory } from "@/lib/project-stories";
 import ScrollSurface from "./scroll-surface";
 import ProjectImage from "./project-image";
 
-export default function Work({ projects }: { projects: Project[] }) {
-  const [filter, setFilter] = useState("Highlights");
-  const [expanded, setExpanded] = useState(false);
+export default function Work({ projects, archive = false }: { projects: Project[]; archive?: boolean }) {
+  const allLabel = archive ? "All projects" : "Highlights";
+  const [filter, setFilter] = useState(allLabel);
   const priority = ["ellipsis-a-calm-place-for-busy-minds", "usiju-event-centre", "scriblr-legacy", "genie"];
   const ordered = [...projects].sort((a, b) => {
     if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
@@ -18,11 +18,12 @@ export default function Work({ projects }: { projects: Project[] }) {
     const rank = (p: Project) => priority.includes(p.slug) ? priority.indexOf(p.slug) : 100;
     return rank(a) - rank(b);
   });
-  const filtered = filter === "Highlights" ? ordered : filter === "Client work" ? ordered.filter(isClientProject) : filter === "Personal products" ? ordered.filter(p => p.category === 'Personal product') : ordered.filter(p => p.category ? ['Experiment','Developer tool','Game'].includes(p.category) : !isClientProject(p) && !priority.slice(0, 3).includes(p.slug));
-  const visible = expanded || filter !== "Highlights" ? filtered : filtered.slice(0, 4);
-  return <section id="work" className="work-section section-space" aria-labelledby="work-title">
-    <div className="section-top"><div><h2 id="work-title">Things I’ve built<span className="heading-suit" aria-hidden="true">♠</span></h2></div></div>
-    <div className="project-filters" aria-label="Filter work">{["Highlights", "Client work", "Personal products", "Experiments"].map(label => <button key={label} type="button" aria-pressed={filter === label} onClick={() => { setFilter(label); setExpanded(false); }}>{label}</button>)}</div>
+  const filtered = filter === allLabel ? ordered : filter === "Client work" ? ordered.filter(isClientProject) : filter === "Personal products" ? ordered.filter(p => p.category === 'Personal product') : ordered.filter(p => p.category ? ['Experiment','Developer tool','Game'].includes(p.category) : !isClientProject(p) && !priority.slice(0, 3).includes(p.slug));
+  const visible = archive ? filtered : filtered.slice(0, 4);
+  return <section id="work" className={`work-section ${archive ? "project-archive-list" : "section-space"}`} aria-labelledby={archive ? "projects-title" : "work-title"}>
+    {archive && <h2 className="sr-only">Browse projects</h2>}
+    {!archive && <div className="section-top"><div><h2 id="work-title">Things I’ve built<span className="heading-suit" aria-hidden="true">♠</span></h2></div></div>}
+    <div className="project-filters" aria-label="Filter work">{[allLabel, "Client work", "Personal products", "Experiments"].map(label => <button key={label} type="button" aria-pressed={filter === label} onClick={() => setFilter(label)}>{label}</button>)}</div>
     <div className="project-grid">{visible.map((project, index) => {
       const story = projectStory(project);
       return <ScrollSurface as="article" key={project.id} index={index} className={`project-card project-tone-${index % 4}`}>
@@ -33,7 +34,7 @@ export default function Work({ projects }: { projects: Project[] }) {
         <div className="project-details"><h3><Link href={`/projects/${project.slug}`}>{story.title}</Link></h3><p className="project-summary">{story.summary}</p><div className="project-bottom"><span>{projectTags(project).slice(0, 3).join(" / ")}</span><Link href={`/projects/${project.slug}`} aria-label={`Read the ${story.title} story`}><span className="story-label">Read story</span><ArrowUpRight size={16} /></Link></div></div>
       </ScrollSurface>;
     })}</div>
-    {filter === "Highlights" && filtered.length > 4 && <button className="more-work" onClick={() => setExpanded(!expanded)}>{expanded ? "Show highlights" : `See all ${projects.length} projects`}<span aria-hidden="true">{expanded ? "−" : "+"}</span></button>}
+    {!archive && projects.length > 0 && <Link className="more-work" href="/projects">See all {projects.length} projects<span aria-hidden="true">↗</span></Link>}
     {visible.length === 0 && <p className="inline-notice">There are no published projects in this category yet.</p>}
   </section>;
 }

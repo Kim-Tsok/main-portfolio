@@ -390,6 +390,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .header-menu-toggle { border:0; border-radius:11px; width:44px; height:44px; background:#ffffff08; }
 .header-mobile-menu { width:calc(100% - 40px); padding:9px 18px 12px; margin-top:7px; border:1px solid #ffffff19; border-radius:16px; background:#202226; }
 .header-mobile-menu>a { border-color:#ffffff12; color:#d4d5dc; font-size:13px; }
+.header-mobile-menu>a>span { display:inline-flex; align-items:center; gap:12px; }
+.header-mobile-menu>a>span>i { display:inline-flex; align-items:center; justify-content:center; width:20px; flex-shrink:0; font-style:normal; }
+.portfolio-shell>.container-page.projects-archive>.project-archive-list { margin-left:0; padding:0; }
 @media (max-width:699px) { .simple-header { padding-top:10px; }.simple-header .header-inner { min-height:58px; width:calc(100% - 24px); padding:5px 10px 5px 14px; border-radius:16px; gap:10px; }.header-actions { gap:12px; }.simple-header .brand-name { font-size:13px; }.brand-suit { font-size:23px; }.header-mobile-menu { width:calc(100% - 24px); } }
 
 /* KT signature, a rounded link group, and a separate contact anchor. */
