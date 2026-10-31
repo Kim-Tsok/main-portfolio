@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import Link from 'next/link';
 import { AnimatePresence, motion } from "framer-motion";
 
 const EntranceContext = createContext({ assetsReady: true, finished: true, finish: () => {} });
@@ -10,6 +11,7 @@ export function DeckLoader() {
   return <div className="deck-loader" role="status" aria-live="polite">
     <div className="loader-cards" aria-hidden="true"><span>♣</span><span>♦</span><span>♠</span></div>
     <p>Dealing you in<span aria-hidden="true">…</span></p>
+    <Link href="/simple" prefetch={false} className="loader-simple-link">Simplified version</Link>
   </div>;
 }
 

@@ -496,6 +496,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .deck-only-intro .deck-controls p { min-width:80px; font-size:12px; }
 .deck-only-intro .deck-controls p>span:not(.sr-only) { display:inline; font-size:12px; margin:0; }
 .deck-only-intro .deck-controls button:disabled { cursor:default; opacity:.45; }
+.hero-version-switch { display:flex; justify-content:center; margin-top:20px; }
+.hero-version-switch a { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:8px 18px; border:1px solid #ffffff30; border-radius:999px; color:#e6e7ed; font-size:12px; background:#202226; }
+.hero-version-switch a:hover { background:#2b2e35; }
+.loader-simple-link { display:inline-flex; align-items:center; min-height:44px; margin-top:22px; color:#d6d9e3; font-size:12px; text-decoration:underline; text-underline-offset:4px; }
 .deck-only-intro .deck-instruction { font-size:11px; margin-top:12px; color:#aeb3c1; }
 @media (max-width:699px) {
  .portfolio-shell .deck-only-intro { padding:50px 0 58px; }

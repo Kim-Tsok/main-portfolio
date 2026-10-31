@@ -64,3 +64,7 @@ The canonical site URL remains the current domain. Once `kimtsok.dev` is registe
 The studio marks unsaved changes and asks whether to keep editing or discard them before switching collections, selecting another entry, starting a new entry, archiving the edited entry, returning home or signing out. Escape keeps the draft and returns keyboard focus. Browser reloads and closing the page use the browser’s own unsaved-change warning. This is a warning, not automatic draft storage; save changes to persist them.
 
 The introduction description has a 140-character limit and counter. Successful saves retain their entry ID even if the list refresh fails, so retrying updates the saved entry.
+
+## Simplified portfolio
+
+`/simple` offers a text-only portfolio using the same published projects, skills, blog posts, personal entries and site settings. It has no card deck, image gallery or entrance animation. The homepage links to it below the deck controls and from the opening loader. A Full version link returns to the main homepage.
