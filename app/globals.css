@@ -630,7 +630,7 @@ a.business-row:hover { background:#ffffff0c; }
  .card-navigation .nav-card-label { top:26px; font-size:10px; }
  .card-navigation .nav-card-suit { bottom:12px; font-size:26px; }
  .card-navigation .rail-home { display:none; }
- .card-navigation .rail-contact { min-width:44px; width:44px; min-height:48px; margin-bottom:5px; border-radius:50%; background:#25272d; }
+ .card-navigation .rail-contact { flex:0 0 52px; width:52px; height:52px; min-width:52px; min-height:52px; padding:0; gap:3px; margin-bottom:5px; border-radius:50%; background:#25272d; }
  .card-navigation .rail-contact>span { font-size:9px; }
 }
 @media (prefers-reduced-motion:reduce) {

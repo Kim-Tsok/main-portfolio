@@ -9,8 +9,8 @@ import { site } from "@/lib/site";
 import {useSiteSettings} from "./settings-provider";
 
 const links = [
-  {href:"/#work",label:"Work",suit:"♠"},
   {href:"/#about",label:"About",suit:"♦"},
+  {href:"/#work",label:"Work",suit:"♠"},
   {href:"/blog",label:"Blog",suit:"♥"},
   {href:"/#elsewhere",label:"Beyond code",suit:"♣"},
 ];

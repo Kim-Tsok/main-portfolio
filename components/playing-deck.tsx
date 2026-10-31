@@ -10,9 +10,9 @@ import { useSiteSettings } from "./settings-provider";
 
 const cards = [
   { rank: "A", suit: "♠", name: "Kim Tsok", label: "Introduction", rail: "About", description: "", href: "#about", link: "About me", tone: "spade", motif: "portrait" },
-  { rank: "J", suit: "♣", name: "Creative", label: "Creative", rail: "Beyond", description: "Games, music, photography, and a little Blender.", href: "#elsewhere", link: "Beyond code", tone: "club", motif: "joker" },
   { rank: "K", suit: "♦", name: "Projects", label: "Projects", rail: "Work", description: "My own products and websites built for clients.", href: "#work", link: "View projects", tone: "diamond", motif: "king" },
   { rank: "Q", suit: "♥", name: "Writing", label: "Writing", rail: "Blog", description: "Notes on building things. Essays on everything else.", href: "#blog", link: "Read the blog", tone: "heart", motif: "queen" },
+  { rank: "J", suit: "♣", name: "Creative", label: "Creative", rail: "Beyond", description: "Games, music, photography, and a little Blender.", href: "#elsewhere", link: "Beyond code", tone: "club", motif: "joker" },
 ];
 
 function CardArt({ motif, suit }: { motif: string; suit: string }) {
@@ -91,7 +91,7 @@ export default function PlayingDeck() {
       // The original space stays in flow while the cards become navigation.
       setDocked(stage.current.getBoundingClientRect().bottom < 100);
       let current = "about";
-      for (const id of ["work", "about", "blog", "elsewhere", "contact"]) {
+      for (const id of ["about", "work", "blog", "elsewhere", "contact"]) {
         const element = document.getElementById(id);
         if (element && element.getBoundingClientRect().top <= window.innerHeight * .4) current = id;
       }
@@ -166,7 +166,7 @@ export default function PlayingDeck() {
     </div>
     {docked && <motion.nav layoutRoot className="card-navigation" aria-label="Page sections" initial={false}>
       <a className="rail-home" href="#top" aria-label="Back to top">kt<span aria-hidden="true">↑</span></a>
-      <div className="nav-card-hand">{cards.map((card, index) => <motion.a key={card.tone} layoutId={reduced ? undefined : `card-${index}`} href={card.href} aria-label={index === 1 ? "Beyond code" : undefined}
+      <div className="nav-card-hand">{cards.map((card, index) => <motion.a key={card.tone} layoutId={reduced ? undefined : `card-${index}`} href={card.href} aria-label={card.href === "#elsewhere" ? "Beyond code" : undefined}
         aria-current={section === card.href.slice(1) ? "location" : undefined} className={`navigation-card suit-${card.tone}`} initial={false}
         transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 180, damping: 27 }} style={{ "--hand-angle": `${(index - 1.5) * 7}deg`, "--hand-arc": `${Math.abs(index - 1.5) * 6}px`, "--hand-order": index } as CSSProperties}>
         <span className="nav-card-rank" aria-hidden="true">{card.rank}<span>{card.suit}</span></span><span className="nav-card-suit" aria-hidden="true">{card.suit}</span><span className="nav-card-label">{card.rail}</span>

@@ -28,8 +28,8 @@ export const socials = [
 ];
 
 export const nav = [
-  { id: "work", label: "Work" },
   { id: "about", label: "About & skills" },
+  { id: "work", label: "Work" },
   { id: "blog", label: "Blog" },
   { id: "elsewhere", label: "Beyond code" },
   { id: "contact", label: "Contact" },
