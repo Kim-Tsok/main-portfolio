@@ -12,7 +12,7 @@ from docx.opc.constants import RELATIONSHIP_TYPE as RT
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = json.loads((ROOT / 'lib/resumes.json').read_text())
-OUT = ROOT / 'public/resumes'
+OUT = ROOT / 'private/resumes'
 OUT.mkdir(parents=True, exist_ok=True)
 
 

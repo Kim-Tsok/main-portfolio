@@ -6,17 +6,13 @@ import resumes from '@/lib/resumes.json';
 import PrintButton from './print-button';
 import styles from './resume.module.css';
 
-export const metadata:Metadata={title:'Résumé',description:'Kim Tsok’s frontend and full-stack engineering résumés. Read online or download a PDF or editable Word version.',alternates:{canonical:'/resume'}};
-type Props={searchParams:Promise<{role?:string}>};
-export default async function Resume({searchParams}:Props){
- const {role}=await searchParams;
- const current=resumes.versions.find(version=>version.id===role)||resumes.versions[1];
+export const metadata:Metadata={title:'Résumé',description:'Kim Tsok’s full-stack engineering résumé. Read online or download the PDF.',alternates:{canonical:'/resume'}};
+export default function Resume(){
+ const current=resumes.versions.find(version=>version.id==='fullstack')!;
  return <div className="portfolio-shell">
   <a href="#main" className="skip-link">Skip to content</a><Header/>
   <main id="main" className={`container-page ${styles.page}`}>
-   <header className={styles.intro}><Link href="/" className="breadcrumb"><ArrowLeft size={14}/>Back home</Link><h1>Résumé.</h1><p>Choose the version that fits the role.</p></header>
-   <section className={styles.downloads} aria-label="Résumé downloads">{resumes.versions.map(version=><article key={version.id}><h2>{version.title}</h2><p>{version.audience}</p><div><a href={`/resumes/${version.filename}.pdf`} download><Download size={15} aria-hidden="true"/>Download PDF</a><a href={`/resumes/${version.filename}.docx`} download>Word (.docx)</a></div></article>)}</section>
-   <div className={styles.previewHeader}><h2>Read online</h2><nav aria-label="Résumé versions">{resumes.versions.map(version=><Link key={version.id} href={`/resume?role=${version.id}`} scroll={false} aria-current={version.id===current.id?'page':undefined}>{version.id==='frontend'?'Frontend':'Full stack'}</Link>)}</nav></div>
+   <header className={styles.intro}><Link href="/" className="breadcrumb"><ArrowLeft size={14}/>Back home</Link><h1>Résumé.</h1><a className={styles.pdfDownload} href={`/resumes/${current.filename}.pdf`} download><Download size={16} aria-hidden="true"/>Download PDF</a></header>
    <article className={`resume-sheet ${styles.sheet}`} aria-label={`${current.title} résumé`}>
     <h1>{resumes.name}</h1><p className={styles.role}>{current.title} · {resumes.location}</p><p className={styles.contact}><a href={`mailto:${resumes.email}`}>{resumes.email}</a><a href={resumes.github}>GitHub</a><a href={resumes.linkedin}>LinkedIn</a></p>
     <h2>Profile</h2><p>{current.summary}</p>

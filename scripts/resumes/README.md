@@ -10,11 +10,16 @@ To rebuild the Word files, use Python with `python-docx` installed:
 python3 scripts/resumes/build_resumes.py
 ```
 
-The script writes both DOCX files to `public/resumes`. Export each to PDF using
-Word or LibreOffice, keeping the matching filename. When using the Codex
+The script writes both DOCX files to `private/resumes`. Export each to PDF using
+Word or LibreOffice, keeping the matching filename. Keep the frontend PDF in
+`private/resumes` and only the full-stack PDF in `public/resumes`. When using the Codex
 document workflow, run the builder with the bundled Python runtime and render
-each DOCX with `render_docx.py --emit_pdf` before copying the PDF into
-`public/resumes`.
+each DOCX with `render_docx.py --emit_pdf` before copying the PDFs to those folders.
+
+Never place Word files or frontend documents in `public`. They are downloaded
+from `/admin/resumes` through an authenticated, non-cached API route. The route
+checks the admin role and resolves only filenames from `lib/resume-files.ts`.
+Next.js output tracing bundles the private files into the download function.
 
 Check every rendered page after editing: both versions should fit on one A4
 page with readable text, working hyperlinks and no clipped content. Commit all
