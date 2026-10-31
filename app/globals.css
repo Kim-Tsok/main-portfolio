@@ -447,10 +447,37 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 @media (max-width:699px) {
  .beyond-items { grid-template-columns:1fr; }.beyond-item { padding:20px 0; }.photography-intro { align-items:flex-start; gap:12px; }.photography-intro h3 { font-size:19px; }.photography-intro p { font-size:11px; }.photography-intro>.text-link { font-size:10px; }.photo-grid { grid-template-columns:1fr; gap:18px; }.photo-dialog { padding:12px; }.photo-full { height:62dvh; }.photo-viewer-caption { flex-direction:column; gap:15px; }.photo-viewer-controls { justify-content:center; }.photo-viewer-caption h2 { font-size:17px; }
  .cms-shell { padding:0 15px 35px; }.cms-top { align-items:flex-start; gap:10px; }.cms-top>div:last-child { gap:10px; flex-direction:column; }.cms-top a,.cms-top button { font-size:11px; min-height:32px; }.cms-heading { align-items:flex-start; gap:12px; }.cms-heading h1 { font-size:23px; }.cms-heading p { font-size:11px; }.cms-workspace { grid-template-columns:1fr; gap:18px; }.cms-list { max-height:260px; overflow-y:auto; }.cms-editor { padding:18px; }.cms-primary { font-size:11px; padding-inline:12px; }
- /* Keep the closing invitation short enough to read as a footer on a phone. */
- .closing-panel { padding:19px 20px 14px; }.closing-main { grid-template-columns:1fr 105px; gap:12px; padding:28px 0 23px; }.portfolio-shell .closing-copy h2 { font-size:clamp(65px,18vw,82px); letter-spacing:-1px; }.closing-copy>p { font-size:10px; line-height:1.75; margin-top:16px; }.closing-invitation { padding:0; margin:0; }.hello-card { width:101px; height:143px; border-radius:12px; transform:rotate(8deg); }.hello-card::before { inset:7px; border-radius:7px; }.hello-arrow { width:38px; height:38px; margin-bottom:8px; }.hello-arrow>svg { width:28px; height:28px; }.hello-card-title { font-size:20px; letter-spacing:-.5px; }.hello-card-note,.closing-handwritten { display:none; }.hello-corner { top:9px; left:8px; font-size:13px; }.hello-corner>span { font-size:10px; }.hello-corner-bottom { top:auto; left:auto; bottom:9px; right:8px; }.closing-connect { gap:0; padding:6px 0; }.closing-email { font-size:14px; min-height:36px; }.closing-extras>a { min-height:29px; }.closing-bottom { padding-top:7px; }.closing-bottom a { min-height:33px; }.closing-colophon { font-size:8px; }
+ /* Give the mobile invitation room without stacking the card below the heading. */
+ .closing-panel { padding:28px 24px 24px; }
+ .closing-main { grid-template-columns:minmax(0,1fr) 104px; gap:12px; padding:48px 0 38px; }
+ .closing-copy { min-width:0; }
+ .portfolio-shell .closing-copy h2 { font-size:clamp(60px,18vw,80px); letter-spacing:-1px; }
+ .closing-copy>p { font-size:11px; line-height:1.75; margin-top:18px; }
+ .closing-invitation { padding:0; margin:0; }
+ .hello-card { width:104px; height:150px; border-radius:13px; transform:rotate(8deg); }
+ .hello-card::before { inset:7px; border-radius:7px; }
+ .hello-arrow { width:38px; height:38px; margin-bottom:10px; }
+ .hello-arrow>svg { width:29px; height:29px; }
+ .hello-card-title { font-size:20px; letter-spacing:-.5px; }
+ .hello-card-note,.closing-handwritten { display:none; }
+ .hello-corner { top:9px; left:8px; font-size:13px; }
+ .hello-corner>span { font-size:10px; }
+ .hello-corner-bottom { top:auto; left:auto; bottom:9px; right:8px; }
+ .closing-connect { gap:7px; padding:14px 0; }
+ .closing-email { font-size:15px; min-height:44px; }
+ .closing-extras>a { min-height:44px; }
+ .closing-bottom { padding-top:14px; }
+ .closing-bottom a { min-height:44px; }
+ .closing-colophon { font-size:9px; padding-top:18px; }
 }
-@media (max-width:699px) { .closing-main { grid-template-columns:minmax(0,1fr) 88px; gap:10px; }.closing-copy { min-width:0; }.portfolio-shell .closing-copy h2 { font-size:clamp(53px,14vw,62px); }.hello-card { width:88px; height:126px; }.hello-card-title { font-size:17px; }.hello-arrow { width:33px; height:33px; }.hello-arrow>svg { width:25px; height:25px; } }
+
+@media (max-width:360px) {
+ .closing-panel { padding-inline:20px; }
+ .closing-main { grid-template-columns:minmax(0,1fr) 88px; gap:10px; }
+ .portfolio-shell .closing-copy h2 { font-size:52px; }
+ .hello-card { width:88px; height:132px; }
+ .hello-card-title { font-size:17px; }
+}
 
 /* The opening is a deck. Its first card holds the introduction. */
 .entrance-overlay { position:fixed; inset:0; z-index:200; display:grid; place-items:center; background:#151619; color:#eeece2; }
