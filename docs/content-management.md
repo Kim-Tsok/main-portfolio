@@ -58,3 +58,9 @@ Project, portrait and blog images have permanent public URLs in `portfolio-media
 For businesses controls `/business`. Add or edit a business type, description and display order. Keep Specialized page set to Planned until its destination exists; Available requires a link. The initial list includes the existing law-firm page and planned pages for cleaning, agencies, venues, property businesses and accounting firms. No new specialized sites are created by this migration.
 
 The canonical site URL remains the current domain. Once `kimtsok.dev` is registered and connected in hosting, set `NEXT_PUBLIC_SITE_URL=https://kimtsok.dev` and redeploy to update canonical URLs, sitemap links and metadata.
+
+## Unsaved edits
+
+The studio marks unsaved changes and asks whether to keep editing or discard them before switching collections, selecting another entry, starting a new entry, archiving the edited entry, returning home or signing out. Escape keeps the draft and returns keyboard focus. Browser reloads and closing the page use the browser’s own unsaved-change warning. This is a warning, not automatic draft storage; save changes to persist them.
+
+The introduction description has a 140-character limit and counter. Successful saves retain their entry ID even if the list refresh fails, so retrying updates the saved entry.
