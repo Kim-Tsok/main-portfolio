@@ -13,6 +13,7 @@ export interface Project {
   tech_stack: string[];
   link: string | null;
   github_url: string | null;
+  card_link?: string | null;
   custom_links: { label: string; url: string }[] | null;
   created_at: string;
   updated_at: string | null;

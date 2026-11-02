@@ -1,4 +1,5 @@
 import {projectCategories} from './project-categories';
+import {projectCardLinkOptions} from './project-card-link';
 export const collections=['projects','blog_posts','photographs','personal_content','business_sectors','skills','services','site_settings'] as const;
 export type Collection=typeof collections[number];
 export const isCollection=(value:unknown):value is Collection=>typeof value==='string'&&(collections as readonly string[]).includes(value);
@@ -36,5 +37,9 @@ export function validateContent(collection:Collection,input:unknown){
  const tech=r.tech_stack;if(!Array.isArray(tech)||tech.length>30||tech.some(t=>typeof t!=='string'||t.length>100))throw Error('Provide a valid list of tools.');
  const category=text(r.category,40,true);if(!(projectCategories as readonly string[]).includes(category))throw Error('Choose a valid project category.');
  const custom=r.custom_links??[];if(!Array.isArray(custom)||custom.length>12)throw Error('Use at most 12 project links.');
- return {...base,...publishing,category,slug:slug(r.slug),description:text(r.description,10000,true),summary:text(r.summary,1000),article:text(r.article,100000),image_url:mediaLink(r.image_url),link:safeLink(r.link),github_url:safeLink(r.github_url),tech_stack:tech.map(t=>t.trim()).filter(Boolean),featured:bool(r.featured??false),custom_links:custom.map(l=>({label:text(l?.label,100,true),url:safeLink(l?.url)}))};
+ const links={link:safeLink(r.link),github_url:safeLink(r.github_url),custom_links:custom.map(l=>({label:text(l?.label,100,true),url:safeLink(l?.url)}))};
+ const selection=text(r.card_link,2055)||'auto';
+ const card_link=selection.startsWith('custom:')?`custom:${safeLink(selection.slice(7))}`:selection;
+ if(!['auto','none'].includes(card_link)&&!projectCardLinkOptions(links).some(option=>option.value===card_link))throw Error('Choose an available card link, or use Automatic.');
+ return {...base,...publishing,category,slug:slug(r.slug),description:text(r.description,10000,true),summary:text(r.summary,1000),article:text(r.article,100000),image_url:mediaLink(r.image_url),...links,card_link,tech_stack:tech.map(t=>t.trim()).filter(Boolean),featured:bool(r.featured??false)};
 }

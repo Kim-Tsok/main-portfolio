@@ -59,6 +59,10 @@ For businesses controls `/business`. Add or edit a business type, description an
 
 The canonical site URL remains the current domain. Once `kimtsok.dev` is registered and connected in hosting, set `NEXT_PUBLIC_SITE_URL=https://kimtsok.dev` and redeploy to update canonical URLs, sitemap links and metadata.
 
+## Project card links
+
+Apply `node scripts/database.mjs file scripts/008_project_card_link.sql` to store each project's card-link choice. In Projects, use **Link beside Read story** to choose Live site, GitHub, or an entry from Additional links (for example, `itch.io | https://yourname.itch.io/game`). Automatic prefers the live site, then GitHub, then the first additional link. No extra link shows only Read story. The selected destination opens in a new tab on homepage and project archive cards; all project links remain available in the full story. If you remove a selected destination, choose another card link before saving.
+
 ## Unsaved edits
 
 The studio marks unsaved changes and asks whether to keep editing or discard them before switching collections, selecting another entry, starting a new entry, archiving the edited entry, returning home or signing out. Escape keeps the draft and returns keyboard focus. Browser reloads and closing the page use the browser’s own unsaved-change warning. This is a warning, not automatic draft storage; save changes to persist them.

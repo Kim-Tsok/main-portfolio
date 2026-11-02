@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { isClientProject, projectTags, type Project } from "@/lib/data";
 import { projectStory } from "@/lib/project-stories";
+import { projectCardLink } from "@/lib/project-card-link";
 import ScrollSurface from "./scroll-surface";
 import ProjectImage from "./project-image";
 
@@ -26,12 +27,13 @@ export default function Work({ projects, archive = false }: { projects: Project[
     <div className="project-filters" aria-label="Filter work">{[allLabel, "Client work", "Personal products", "Experiments"].map(label => <button key={label} type="button" aria-pressed={filter === label} onClick={() => setFilter(label)}>{label}</button>)}</div>
     <div className="project-grid">{visible.map((project, index) => {
       const story = projectStory(project);
+      const cardLink = projectCardLink(project);
       return <ScrollSurface as="article" key={project.id} index={index} className={`project-card project-tone-${index % 4}`}>
         <Link href={`/projects/${project.slug}`} className="project-cover" aria-label={`Read about ${story.title}`}>
           {project.image_url ? <ScrollSurface treatment="image" className="project-screenshot"><ProjectImage src={project.image_url} alt={`${story.title} interface`} sizes="(min-width: 1100px) 490px, (min-width: 700px) 45vw, 90vw" priority={index < 2} className="object-cover object-top" /></ScrollSurface> : <span className="cover-title">{story.title}</span>}
           <span className="project-open" aria-hidden="true"><ArrowUpRight size={20} /></span>
         </Link>
-        <div className="project-details"><h3><Link href={`/projects/${project.slug}`}>{story.title}</Link></h3><p className="project-summary">{story.summary}</p><div className="project-bottom"><span>{projectTags(project).slice(0, 3).join(" / ")}</span><Link href={`/projects/${project.slug}`} aria-label={`Read the ${story.title} story`}><span className="story-label">Read story</span><ArrowUpRight size={16} /></Link></div></div>
+        <div className="project-details"><h3><Link href={`/projects/${project.slug}`}>{story.title}</Link></h3><p className="project-summary">{story.summary}</p><div className="project-bottom"><span>{projectTags(project).slice(0, 3).join(" / ")}</span><div className="project-card-links">{cardLink && <a href={cardLink.href} target="_blank" rel="noopener noreferrer" aria-label={`${story.title}: ${cardLink.label} (opens in a new tab)`}>{cardLink.label}<ArrowUpRight size={16} aria-hidden="true" /></a>}<Link href={`/projects/${project.slug}`} aria-label={`Read the ${story.title} story`}><span className="story-label">Read story</span><ArrowUpRight size={16} aria-hidden="true" /></Link></div></div></div>
       </ScrollSurface>;
     })}</div>
     {!archive && projects.length > 0 && <Link className="more-work" href="/projects">See all {projects.length} projects<span aria-hidden="true">↗</span></Link>}
